@@ -1,17 +1,13 @@
-<!DOCTYPE HTML>
-<html>
-<head>
-    <title>AWS-PHP Application</title>
-</head>
-<body>
-<h1>Hello World, Giray</h1>
-<?php
-    include 'db_test.php';
-    $users = $conn->query("select * from Users");
-    $result = $users->fetch_all();
-    print_r($result);
-
-    $conn->close();
+<?php 
+$title = 'Yum-Yum Home';
+require_once 'components/header.php'; 
 ?>
-</body>
-</html>
+
+</head>
+  <body>
+
+<h1>Hello World</h1>
+
+
+
+<?php require_once 'components/footer.php'; ?>

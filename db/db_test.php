@@ -9,4 +9,11 @@
     if($conn->connect_error){
         die('Connection Error'.$conn->connect_error);
     } 
+
+    include 'db_test.php';
+    $users = $conn->query("select * from Users");
+    $result = $users->fetch_all();
+    print_r($result);
+
+    $conn->close();
 ?>
