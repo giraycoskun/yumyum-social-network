@@ -33,6 +33,30 @@ class crud{
             return false;
         }
     }
+    public function getReportedUsers(){
+        try{
+            $sql = "select * from Users where Users.isReported = 1 AND Users.isActive= 1";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt;
+            return $result;
+       }catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+    public function getReportedPosts(){
+        try{
+            $sql = "select * from Posts, Users where Posts.isReported = 1 AND Posts.isHidden= 0 AND Posts.uID = Users.uID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->execute();
+            $result = $stmt;
+            return $result;
+       }catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
 }
 
 ?>
