@@ -74,6 +74,7 @@ class crud{
             echo $e->getMessage();
             return false;
         }
+    }
 
     }
 
@@ -109,6 +110,18 @@ class crud{
             return $stmt;
        }catch (PDOException $e) {
             #echo $e->getMessage();
+       }
+    }
+    public function getPostByID($pID){
+        try{
+            $sql = "select * from Posts,Users where Posts.pID = :pID and Posts.uID = Users.uID ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':pID', $pID);
+            $stmt->execute();
+            $result = $stmt;
+            return $result;
+       }catch (PDOException $e) {
+            echo $e->getMessage();
             return false;
         }
     }

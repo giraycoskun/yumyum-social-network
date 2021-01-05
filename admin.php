@@ -35,7 +35,9 @@ require_once 'db/conn.php'
                 <td><?php echo $row['uName'] ?></td>
                 <td>
                     <a href="profile.php?id=<?php echo $row['uID'] ?>" class="btn btn-primary">View</a>
-                    <a href="suspendUser.php?id=<?php echo $row['uID'] ?>" class="btn btn-warning">Suspend</a>
+                    <label for="birthday">Suspend Until:</label>
+                    <input type="date" id="suspend" name="suspend">
+                    <a href="suspendUser.php?id=<?php echo $row['uID'] ?> &date=<?php?>" class="btn btn-warning">Suspend</a>
                     <a onclick="return confirm('Are you sure you want to delete this user?');" href="deleteUser.php?id=<?php echo $r['uID'] ?>" class="btn btn-danger">Delete</a>
                 </td>
            </tr> 
