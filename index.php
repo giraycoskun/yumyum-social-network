@@ -1,7 +1,7 @@
 <?php 
 $title = 'Yum-Yum Home';
 require_once 'components/header.php'; 
-require_once 'db/conn.php'
+require_once 'db/conn.php';
 ?>
 
 <?php 
@@ -11,15 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       $password = $_POST['inputPassword'];
 
       $result = $crud->getUser($userMail,$password);
-      print_r($result);
-
       if(!$result){
         echo '<div class="alert alert-danger">Username or Password is incorrect! Please try again. </div>';
     }else{
-        #$_SESSION['usermail'] = $username;
-        #$_SESSION['userid'] = $result['id'];
         $_SESSION['mail'] = $userMail;
-        header("Location: feed.php?mail=".$userMail);
+        header("Location: feed.php");
     }
 
       
@@ -31,6 +27,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
   }
 }
 ?>
+
+
 
 <div class="text-center mx-sm-3 justify-content-center">
 <form action="<?php echo htmlentities($_SERVER['PHP_SELF']); ?>" method="post" class="form-signin" >
@@ -53,3 +51,4 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
 
 <?php require_once 'components/footer.php'; ?>
+
