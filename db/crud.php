@@ -57,6 +57,27 @@ class crud{
             return false;
         }
     }
+
+    public function getMessages($userID){
+
+        try{
+            //$sql1 = "select * from Messages, Users where Messages.rID = Users.uID and Users.uID = :userID";
+            $sql2 = "select Messages.content, Users.name, Users.surname from Messages, Users where Messages.sID = Users.uID and Users.uID != :userID";
+            //$stmt = $this->db->prepare($sql1);
+            $stmt2 = $this->db->prepare($sql2);
+            $stmt2->bindparam(':userID', $userID);
+            //$stmt->execute();
+            $stmt2->execute();
+            $result = $stmt2;
+            return $result;
+       }catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+
+
+
+    }
 }
 
 ?>

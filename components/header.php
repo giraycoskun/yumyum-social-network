@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="css/forms.css"  >
     <link rel="stylesheet" href="css/header.css"  >
     <link rel="stylesheet" href="css/footer.css"  >
+    
     <title><?php echo $title?></title>
 
     </head>
