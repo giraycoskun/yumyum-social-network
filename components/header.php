@@ -27,6 +27,20 @@
   </a>
 </nav>
 
+
+<?php elseif($_SESSION['isAdmin']==true) : ?>
+  <nav class="navbar navbar-light bg-light">
+<a class="navbar-brand" href="#">
+  <img src="https://drive.google.com/thumbnail?id=1LolaArK6Zwpb9r93fiVGC1GQ09Fjy6qs" width="30" height="30" class="d-inline-block align-top" alt="">
+  Admin DashBoard
+</a>
+</form>
+      <form action="logout.php" method="get" class="d-flex px-2">
+      <button class="btn btn-sm btn-primary btn-block px-2" name="logout" type="submit">Logout</button>
+      </form>
+</nav>
+
+
 <?php else : ?>
 
 <nav class="navbar-expand-lg navbar navbar-dark bg-dark">

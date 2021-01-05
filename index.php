@@ -14,9 +14,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       if(!$result){
         echo '<div class="alert alert-danger">Username or Password is incorrect! Please try again. </div>';
     }else{
-        $_SESSION['mail'] = $userMail;
-        $_SESSION['uID'] = $result['uID'];
+
+      $_SESSION['mail'] = $userMail;
+      $_SESSION['uID'] = $result['uID'];
+      $_SESSION['isAdmin'] = $result['isAdmin'];
+      if($result['isAdmin']== false)
+      {   
         header("Location: feed.php");
+      }   
+      else
+      {
+        header("Location: admin.php");
+      }
     }
 
       
