@@ -9,6 +9,6 @@ require_once 'db/conn.php'
 
 
 
-<p>Welcome to Your Feed <?php echo $_SESSION['mail']?></p>
+<p>Welcome to Your Feed <?php echo $_SESSION['mail']." - ".$_SESSION['uID'] ?></p>
 
 <?php require_once 'components/footer.php'; ?>

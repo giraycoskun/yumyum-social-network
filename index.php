@@ -15,6 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         echo '<div class="alert alert-danger">Username or Password is incorrect! Please try again. </div>';
     }else{
         $_SESSION['mail'] = $userMail;
+        $_SESSION['uID'] = $result['uID'];
         header("Location: feed.php");
     }
 
