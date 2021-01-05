@@ -1,4 +1,10 @@
 
+<footer class="footer">
+      <div class="container">
+        <span class="text-muted">Created for CS 306 Database</span>
+      </div>
+</footer>
+
 
 <!-- Optional JavaScript; choose one of the two! -->
 

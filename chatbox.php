@@ -1,11 +1,8 @@
 <?php 
 $title = 'Yum-Yum Home';
 require_once 'components/header.php'; 
-$mail = $_GET['mail'];
 ?>
 
-<?php require_once 'components/tabs.php'; ?>
-
-<p>Welcome to Your Feed <?php echo $mail?></p>
+<h2>Welcome to ChatBox</h2>
 
 <?php require_once 'components/footer.php'; ?>
