@@ -28,22 +28,18 @@ require_once 'db/conn.php'
           
           <?php
             $results = $crud->getReportedUsers();
-            while($row = $results->fetch(PDO::FETCH_ASSOC))
-                {
-                  $uid = $row['uID'];
-                  $userName = $row['uName'];             
-                echo "<tr><th scope='row'>".$uid."</th>" . 
-                "<td>".$userName." </td>". 
-                '<td>
-              <button type="button" class="btn btn-primary"><i class="far fa-eye">Show</i></button>
-              <button type="button" class="btn btn-warning"><i class="fas fa-edit">Suspend</i></button>
-            <button type="button" class="btn btn-danger"><i class="far fa-trash-alt">Delete</i></button>
-            </td></tr>';
-                }
-          ?>
-            
-         
-          
+            while($row = $results->fetch(PDO::FETCH_ASSOC)){?>
+                
+                <tr>
+                <td><?php echo $row['uID'] ?></td>
+                <td><?php echo $row['uName'] ?></td>
+                <td>
+                    <a href="profile.php?id=<?php echo $row['uID'] ?>" class="btn btn-primary">View</a>
+                    <a href="suspendUser.php?id=<?php echo $row['uID'] ?>" class="btn btn-warning">Suspend</a>
+                    <a onclick="return confirm('Are you sure you want to delete this user?');" href="deleteUser.php?id=<?php echo $r['uID'] ?>" class="btn btn-danger">Delete</a>
+                </td>
+           </tr> 
+        <?php }?>
         </tbody>
       </table>
     </div>
@@ -65,25 +61,21 @@ require_once 'db/conn.php'
         </thead>
         <tbody>
           
-          <?php
+        <?php
             $results = $crud->getReportedPosts();
-            while($row = $results->fetch(PDO::FETCH_ASSOC))
-                {
-                  $uid = $row['uID'];
-                  $pID = $row['pID'];  
-                  $userName = $row['uName'];           
-                echo "<tr>
-                <th scope='row'>".$uid."</th>" . 
-                "<td>".$pID." </td>".
-                "<td>".$userName." </td>". 
-                '<td>
-                    <button type="button" class="btn btn-primary"><i class="far fa-eye">Show</i></button>
-                    <button type="button" class="btn btn-warning"><i class="fas fa-edit">Suspend</i></button>
-                    <button type="button" class="btn btn-danger"><i class="far fa-trash-alt">Delete</i></button>
+            while($row = $results->fetch(PDO::FETCH_ASSOC)){?>
+                
+                <tr>
+                <td><?php echo $row['uID'] ?></td>
+                <td><?php echo $row['pID'] ?></td>
+                <td><?php echo $row['uName'] ?></td>
+                <td>
+                    <a href="post.php?id=<?php echo $row['pID'] ?>" class="btn btn-primary">View</a>
+                    <a href="hidePost.php?id=<?php echo $row['uID'] ?>" class="btn btn-warning">Hide</a>
+                    <a onclick="return confirm('Are you sure you want to delete this post?');" href="deletePost.php?id=<?php echo $row['pID'] ?>" class="btn btn-danger">Delete</a>
                 </td>
-                </tr>';
-                }
-          ?>
+           </tr> 
+        <?php }?>
             
          
           

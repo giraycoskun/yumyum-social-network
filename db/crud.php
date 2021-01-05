@@ -58,6 +58,7 @@ class crud{
         }
     }
 
+<<<<<<< HEAD
     public function getMessages($userID){
 
         try{
@@ -77,6 +78,27 @@ class crud{
 
 
 
+=======
+    public function insertUser($username, $pass, $fname, $mail, $lname, $bio, $age, $sex){
+        try{
+            $sql = "INSERT INTO Users (uName, pw, name, surname, mail, bioContent, age, sex ) VALUES(:username, :pass, :fname,  :lname,  :mail, :bio, :age, :sex ); ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':username', $username);
+            $stmt->bindparam(':pass', $pass);
+            $stmt->bindparam(':fname', $fname);
+            $stmt->bindparam(':lname', $lname);
+            $stmt->bindparam(':mail', $mail);
+            $stmt->bindparam(':bio', $bio);
+            $stmt->bindparam(':age', $age);
+            $stmt->bindparam(':sex', $sex);
+            $stmt->execute();
+            echo "New record created successfully";
+            return true;
+       }catch (PDOException $e) {
+            #echo $e->getMessage();
+            return false;
+        }
+>>>>>>> 4780a4c27b52e5015b5091caa90e4529401a0b94
     }
 }
 
