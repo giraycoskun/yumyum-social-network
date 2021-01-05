@@ -17,6 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
       $_SESSION['mail'] = $userMail;
       $_SESSION['uID'] = $result['uID'];
+      $_SESSION['username'] = $result['uName'];
       $_SESSION['isAdmin'] = $result['isAdmin'];
       if($result['isAdmin']== false)
       {   
@@ -35,6 +36,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       //no button pressed
       header('Location: index.php');
   }
+} else if (isset($_SESSION['uName'])) {
+  if($result['isAdmin']== false)
+      {   
+        header("Location: feed.php");
+      }   
+      else
+      {
+        header("Location: admin.php");
+      }
 }
 ?>
 

@@ -73,8 +73,11 @@
       <input class="form-control" type="search" placeholder="Search" aria-label="Search">
       <button class="btn btn-outline-success" type="submit">Search</button>
     </form>
+    <form action="newpost.php" method="get" class="d-flex px-2">
+      <button class="btn btn-sm btn-primary btn-block px-2" name="post" type="submit">New Post</button>
+      </form>
       <form action="logout.php" method="get" class="d-flex px-2">
-      <button class="btn btn-sm btn-primary btn-block px-2" name="logout" type="submit">Logout</button>
+      <button class="btn btn-sm btn-secondary btn-block px-2" name="logout" type="submit">Logout</button>
       </form>
       </div>
     </div>

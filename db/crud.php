@@ -58,7 +58,6 @@ class crud{
         }
     }
 
-<<<<<<< HEAD
     public function getMessages($userID){
 
         try{
@@ -76,9 +75,9 @@ class crud{
             return false;
         }
 
+    }
 
 
-=======
     public function insertUser($username, $pass, $fname, $mail, $lname, $bio, $age, $sex){
         try{
             $sql = "INSERT INTO Users (uName, pw, name, surname, mail, bioContent, age, sex ) VALUES(:username, :pass, :fname,  :lname,  :mail, :bio, :age, :sex ); ";
@@ -92,13 +91,26 @@ class crud{
             $stmt->bindparam(':age', $age);
             $stmt->bindparam(':sex', $sex);
             $stmt->execute();
-            echo "New record created successfully";
+            #echo "New record created successfully";
             return true;
        }catch (PDOException $e) {
             #echo $e->getMessage();
             return false;
         }
->>>>>>> 4780a4c27b52e5015b5091caa90e4529401a0b94
+    }
+
+    public function getPostsbyUser($uID)
+    {
+        try{
+            $sql = "SELECT * FROM Posts WHERE Posts.uID = :uID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':uID', $uID);
+            $stmt->execute();
+            return $stmt;
+       }catch (PDOException $e) {
+            #echo $e->getMessage();
+            return false;
+        }
     }
 }
 

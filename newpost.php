@@ -8,6 +8,6 @@ require_once 'db/conn.php'
 
 ?>
 
-<h1>Welcome to Home</h1>
+<h1>Welcome to New Post</h1>
 
 <?php require_once 'components/footer.php'; ?>

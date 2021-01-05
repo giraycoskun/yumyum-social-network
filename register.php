@@ -2,6 +2,7 @@
 $title = 'Yum-Yum Home';
 require_once 'components/header.php';
 require_once 'db/conn.php';
+#TODO: Ptohoto URL is not added to entry
 ?>
 
 <?php 
