@@ -76,7 +76,7 @@ class crud{
         }
     }
 
-    }
+    
 
 
     public function insertUser($username, $pass, $fname, $mail, $lname, $bio, $age, $sex){
