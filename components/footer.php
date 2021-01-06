@@ -1,9 +1,10 @@
 
-<footer class="footer">
-      <div class="container">
-        <span class="text-muted">Created for CS 306 Database</span>
-      </div>
-</footer>
+<nav class="navbar fixed-bottom navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Fixed bottom</a>
+  </div>
+</nav>
+
 
 
 <!-- Optional JavaScript; choose one of the two! -->

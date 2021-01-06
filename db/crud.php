@@ -125,6 +125,37 @@ class crud{
             return false;
         }
     }
+
+    public function getUserInfo($userID)
+    {
+        try{
+            $sql = "SELECT * FROM Users WHERE Users.uID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            return $result;
+       }catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function updateUser($userID)
+    {
+        try{
+            $sql = "UPDATE Users SET Users WHERE Users.uID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            return $result;
+       }catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+
+    }
 }
 
 ?>
