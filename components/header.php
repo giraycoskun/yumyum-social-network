@@ -1,4 +1,11 @@
-<?php include_once 'components/session.php'; ?>
+<?php include_once 'components/session.php'; 
+
+if(isset($_SESSION['uID']))
+{
+  $userID = $_SESSION['uID'];
+}
+
+?>
 
 <!doctype html>
 <html lang="en">
@@ -57,16 +64,16 @@
     <div class="collapse navbar-collapse" id="navbarText">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
         <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="feed.php">Feed</a>
+          <a class="nav-link" aria-current="page" href="feed.php?id=<?php echo $userID?>">Feed</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="profile.php">Profile</a>
+          <a class="nav-link" href="profile.php?id=<?php echo $userID?>">Profile</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="chatbox.php">ChatBox</a>
+          <a class="nav-link" href="chatbox.php?id=<?php echo $userID?>">ChatBox</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="notifications.php">Notifications</a>
+          <a class="nav-link" href="notifications.php?id=<?php echo $userID?>">Notifications</a>
         </li>
       </ul>
       <div class="d-flex px-2">

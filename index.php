@@ -2,6 +2,12 @@
 $title = 'Yum-Yum Home';
 require_once 'components/header.php'; 
 require_once 'db/conn.php';
+
+if(isset($_SESSION['uID']))
+{
+  header('Location: logout.php');
+}
+
 ?>
 
 <?php 
@@ -17,11 +23,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
       $_SESSION['mail'] = $userMail;
       $_SESSION['uID'] = $result['uID'];
+      $userID = $result['uID'];
       $_SESSION['username'] = $result['uName'];
       $_SESSION['isAdmin'] = $result['isAdmin'];
       if($result['isAdmin']== false)
       {   
-        header("Location: feed.php");
+        header("Location: feed.php?id=$userID");
       }   
       else
       {

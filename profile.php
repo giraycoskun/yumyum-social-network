@@ -5,7 +5,10 @@ require_once 'components/header.php';
 require_once 'components/auth_check.php';
 require_once 'db/conn.php';
 
-$result = $crud->getUserInfo($_SESSION['uID']);
+$userID = $_GET['id'];
+$sessionID = $_SESSION['uID'];
+$isFollowing = $crud->isFollowing($userID, $sessionID);
+$result = $crud->getUserInfo($userID);
 $userName = $result['uName'];
 $userFirstName = $result['name'];
 $userLastName = $result['surname'];
@@ -35,9 +38,15 @@ $userFollowingCount = $result['followCt'];
             <p class="card-text"><b>Following: </b><?php echo $userFollowingCount ?>  -  <b>Follower: </b><?php echo $userFollowerCount ?></p>
             <p class="card-text"><small class="text-muted"><?php echo $userName." - ".$userMail ?></small></p>
             <!-- Button trigger modal -->
+            <? if ($sessionID == $userID): ?>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#deactivateModal">Deactivate</button>
-            
+            <? elseif ($isFollowing): ?>
+            <!--<button type="submit" class="btn btn-secondary" href="newpost.php">Unfollow</button>-->
+            <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollow" role="button">Unfollow</a>
+            <? else: ?>
+                <a class="btn btn-primary" href="following.php?id=<?php echo $userID ?>&action=follow" role="button">Follow</a>
+            <? endif; ?>
         </div>
         </div>
     </div>
@@ -45,7 +54,7 @@ $userFollowingCount = $result['followCt'];
 </div>
 
 <form action="updateProfile.php" method="post" class="d-flex px-2">
-<!-- Modal -->
+<!-- Modal Edit-->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -63,7 +72,7 @@ $userFollowingCount = $result['followCt'];
 </form>
 
 <form action="deactivate.php" method="get" class="d-flex px-2">
-<!-- Modal -->
+<!-- Modal Deactivate-->
     <div class="modal fade" id="deactivateModal" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
@@ -98,12 +107,15 @@ $userFollowingCount = $result['followCt'];
     </div>
 </form>
 
+
+
+
 <div class="container mb-4">
     
     <div class="row row-cols-1 row-cols-md-3 mb-4 g-4">
         <!-- my php code which uses x-path to get results from xml query. -->
         
-        <?php $results = $crud->getPostsbyUser($_SESSION['uID']);
+        <?php $results = $crud->getPostsbyUser($userID);
             while($post = $results->fetch(PDO::FETCH_ASSOC)){?>
             <div class="col">
                 <div class="card">

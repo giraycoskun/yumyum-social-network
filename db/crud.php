@@ -156,6 +156,91 @@ class crud{
         }
 
     }
+
+    public function isFollowing($userID, $sessionID)
+    {
+        try{
+            $sql = "SELECT * FROM UserFollowsUser WHERE UserFollowsUser.FollowerID=:sessionID and UserFollowsUser.FolloweeID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->bindparam(':sessionID', $sessionID);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            #echo "<p>$result</p>";
+            if(empty($result))
+            {
+                return false;
+            }
+            return true;
+       }catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function follow($userID, $sessionID)
+    {
+        try{
+            $sql = "INSERT INTO UserFollowsUser (FollowerID, FolloweeID) VALUES (:sessionID, :userID);";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->bindparam(':sessionID', $sessionID);
+            $stmt->execute();
+
+            $sql = "UPDATE Users SET followerCt = followerCt + 1 WHERE Users.uID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            
+
+            $sql = "UPDATE Users SET followCt = followCt + 1 WHERE Users.uID=:sessionID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':sessionID', $sessionID);
+            $stmt->execute();
+            echo '<div class="alert alert-danger">Checkpoint 1 </div>';
+            return true;
+            #echo "<p>$result</p>";
+            
+       }catch (PDOException $e) {
+        echo '<div class="alert alert-danger">Checkpoint 2 </div>';
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function unfollow($userID, $sessionID)
+    {
+        try{
+           
+            $sql = "DELETE FROM UserFollowsUser WHERE (UserFollowsUser.FollowerID=:sessionID and UserFollowsUser.FolloweeID=:userID)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->bindparam(':sessionID', $sessionID);
+            $stmt->execute();
+            
+            #echo "<p>$result</p>";
+
+            $sql = "UPDATE Users SET followerCt = followerCt - 1 WHERE Users.uID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            
+
+            $sql = "UPDATE Users SET followCt = followCt - 1 WHERE Users.uID=:sessionID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':sessionID', $sessionID);
+            $stmt->execute();
+            return true;
+
+
+            
+       }catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+
 }
 
 ?>
