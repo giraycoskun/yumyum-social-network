@@ -154,8 +154,25 @@ class crud{
             echo $e->getMessage();
             return false;
         }
-
     }
+
+
+        public function getUserName($postID){
+            try{
+                $sql = "SELECT * FROM Users, Posts WHERE Posts.uID = Users.uID and Posts.pID=:postID";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindparam(':postID', $postID);
+                $stmt->execute();
+                $result = $stmt->fetch();
+                return $result;
+           }catch (PDOException $e) {
+                echo $e->getMessage();
+                return false;
+            }
+    
+        }
+
+    
 }
 
 ?>
