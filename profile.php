@@ -35,10 +35,9 @@ $userFollowingCount = $result['followCt'];
             <p class="card-text"><b>Following: </b><?php echo $userFollowingCount ?>  -  <b>Follower: </b><?php echo $userFollowerCount ?></p>
             <p class="card-text"><small class="text-muted"><?php echo $userName." - ".$userMail ?></small></p>
             <!-- Button trigger modal -->
-            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-            Edit
-            </button>
-            <a href="deactivate.php" class="btn btn-secondary" name="logout" type="submit">Deactivate</a>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
+            <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#deactivateModal">Deactivate</button>
+            
         </div>
         </div>
     </div>
@@ -47,15 +46,51 @@ $userFollowingCount = $result['followCt'];
 
 <form action="updateProfile.php" method="post" class="d-flex px-2">
 <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Profile Edit</h5>
+                    <h5 class="modal-title" id="editModalLabel">Profile Edit</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
                 <?php require_once('form.php')?>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</form>
+
+<form action="deactivate.php" method="get" class="d-flex px-2">
+<!-- Modal -->
+    <div class="modal fade" id="deactivateModal" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deactivateModalLabel">Deactivate</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="d-flex container row mt-auto">
+                            <h2>Goodbye, <?php echo $_SESSION['username']?></h2>
+                            <div class="row mt-auto">
+                                <div class="col">
+                                <label for="date">Until:</label>
+                                <input type="date" class="form-control" placeholder="Date" name="date" min="<?php echo date("Y-m-d"); ?>" >
+                                </div>
+                            </div>
+
+                            <div class="row mt-2">
+                                <div class="col container">
+                                    <button class="btn btn-lg btn-primary " name="submit" type="submit">Submit</button>
+                                    <button class="btn btn-lg btn-secondary " name="back" type="submit" onClick="removeRequired(this.form)">Close</button>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </form>
                 </div>
                 
             </div>
