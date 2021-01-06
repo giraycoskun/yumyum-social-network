@@ -38,15 +38,15 @@ $userFollowingCount = $result['followCt'];
             <p class="card-text"><b>Following: </b><?php echo $userFollowingCount ?>  -  <b>Follower: </b><?php echo $userFollowerCount ?></p>
             <p class="card-text"><small class="text-muted"><?php echo $userName." - ".$userMail ?></small></p>
             <!-- Button trigger modal -->
-            <? if ($sessionID == $userID): ?>
+            <?php if ($sessionID == $userID): ?>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#deactivateModal">Deactivate</button>
-            <? elseif ($isFollowing): ?>
+            <?php elseif ($isFollowing): ?>
             <!--<button type="submit" class="btn btn-secondary" href="newpost.php">Unfollow</button>-->
             <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollow" role="button">Unfollow</a>
-            <? else: ?>
+            <?php else: ?>
                 <a class="btn btn-primary" href="following.php?id=<?php echo $userID ?>&action=follow" role="button">Follow</a>
-            <? endif; ?>
+            <?php endif; ?>
         </div>
         </div>
     </div>
