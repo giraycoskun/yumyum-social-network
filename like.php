@@ -20,5 +20,14 @@ elseif($action == "dislike")
     $crud->dislikePost($sessionID, $postID);
     echo '<div class="alert alert-danger">Checkpoint 2 </div>';
 }
-header("Location: profile.php?id=$userID");
+
+if(isset($_GET['feed']))
+{
+    header("Location: feed.php?id=$sessionID");
+}
+else
+{
+    header("Location: profile.php?id=$userID");
+}
+    
 ?>

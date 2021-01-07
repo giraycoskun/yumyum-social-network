@@ -139,15 +139,28 @@ $userFollowingCount = $result['followCt'];
                         <h5 class="card-title"><?php echo $post['uName']?></h5>
                         <p class="card-text"><?php echo $post['txt']?></p>
                         <p class="card-text"><b>Likes:</b>  <?php echo $post['likeCt']?></p>
-                        <p class="card-text"><b>Hidden: </b><?php echo $post['isHidden']?></p>
+                        <p class="card-text"><b>Comments:</b></p>
+                        <?php
+                        $comments = $crud->getCommentsforPost($post['pID']);
+                        foreach( $comments as $comment ) {?>
+                        <p class="card-text"><b> <?php echo $comment['uName']?> </b>: <?php echo $comment['content']?> - <?php echo $comment['timeSt']?> </p>
+                        <?php }?>
                         <p class="card-text"><?php echo $post['timeSt']?></p>
                         <p class="card-text"><?php echo $post['mediaPath']?></p> 
                         <?php if ($sessionID == $userID ): ?>
                             <a class="btn btn-danger" href="hidePost.php?id=<?php echo $post['pID'] ?>&action=delete" role="button">Delete</a>
                         <?php elseif(!$checkLike): ?>
+                            <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=profile" method="post" class="form-control mb-2">
+                                <input type="text" name="content" class="form-control mb-2">
+                                <button type="submit" class="btn btn-primary" href="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=profile" role="button">Comment</button>
+                            </form>
                             <a class="btn btn-primary" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=like" role="button">Like</a>
                             <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button">Report</a>
                         <?php elseif($checkLike): ?>
+                            <form action="comment.php?id=1" method="post" class="form-control mb-2">
+                                <input type="text" name="content" class="form-control">
+                                <button type="submit" class="btn btn-primary" href="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=profile" role="button">Comment</button>
+                            </form>
                             <a class="btn btn-warning" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=dislike" role="button">Dislike</a>
                             <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button">Report</a>
                         <?php endif; ?>

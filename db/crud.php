@@ -150,6 +150,20 @@ class crud{
         }
     }
 
+    public function getPostsForFeed($userID)
+    {
+        try{
+            $sql = "SELECT * FROM Posts, UserFollowsUser, Users WHERE Posts.uID = Users.uID and UserFollowsUser.FolloweeID = Posts.uID and UserFollowsUser.FollowerID=:userID ORDER BY Posts.timeSt LIMIT 0,20";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            return $result;
+       }catch (PDOException $e) {
+            #echo $e->getMessage();
+       }
+    }
+
     public function getUserInfo($userID)
     {
         try{
@@ -464,6 +478,39 @@ class crud{
             {
                 return false;
             }
+            return true;
+       }catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getCommentsforPost($postID)
+    {
+        try{
+            $sql = "SELECT * FROM Users, Comments WHERE Users.uID=Comments.uID and Comments.pID=:postID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':postID', $postID);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+
+            return $result;
+       }catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function insertComment($userID, $postID, $comment)
+    {
+        try{
+            $sql = "INSERT INTO Comments (uID, pID, content) VALUES (:userID, :postID, :comment)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->bindparam(':postID', $postID);
+            $stmt->bindparam(':comment', $comment);
+            $stmt->execute();
+
             return true;
        }catch (PDOException $e) {
             echo $e->getMessage();
