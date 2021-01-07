@@ -15,15 +15,13 @@ if(!isset($_GET['id']))
 else
 {
     $id = $_GET['id'];
-    $day = $_POST['day'];
     echo $id." day count:". $day;
     try{
-        $sql_statement = "UPDATE Users SET Users.bannedUntil = current_date(), Users.bannedUntil = DATE_ADD(Users.bannedUntil , INTERVAL :day DAY), Users.isActive = 0 WHERE Users.uID =:id;";
+        $sql_statement = "UPDATE Users SET bannedUntil = NULL, isActive = 1, isReported = 0 WHERE Users.uID =:id;";
         $stmt = $pdo->prepare($sql_statement);
         $stmt->bindparam(':id', $id);
-        $stmt->bindparam(':day', $day);
         $stmt->execute();
-        echo $id . " user suspended"  . "<br>";
+        echo $id . " user unsuspended"  . "<br>";
     }
     catch (PDOException $e){
         echo "Something went wrong"  . "<br>";
