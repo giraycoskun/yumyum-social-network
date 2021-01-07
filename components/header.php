@@ -77,9 +77,9 @@ if(isset($_SESSION['uID']))
         </li>
       </ul>
       <div class="d-flex px-2">
-      <form action="feed.php" method="get" class="d-flex px-2">
-      <input class="form-control" type="search" placeholder="Search" aria-label="Search">
-      <button class="btn btn-outline-success" type="submit">Search</button>
+      <form action="search.php" method="post" class="d-flex px-2">
+      <input class="form-control" type="search" name="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success" type="submit">Search </button>
     </form>
     <form action="newpost.php" method="get" class="d-flex px-2">
       <button class="btn btn-sm btn-primary btn-block px-2" name="post" type="submit">New Post</button>

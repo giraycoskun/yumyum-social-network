@@ -161,7 +161,38 @@ class crud{
             return $result;
        }catch (PDOException $e) {
             #echo $e->getMessage();
+            return false;
        }
+    }
+
+    public function getPostsForSeach($search)
+    {
+        #TODO
+        try{
+            $sql = "
+            SELECT * FROM
+            (
+            SELECT A.pID, A.txt, A.mediaPath, A.locID, A.timeSt, A.likeCt, A.isHidden, A.isReported, B.uID, B.uName, B.name, B.surname, C.locName
+            FROM Posts as A, Users as B, Locations as C
+            WHERE A.txt LIKE '%:search%' and A.uID=B.uID and C.locID = A.locID
+            UNION
+            SELECT E.pID, E.txt, E.mediaPath, E.locID, E.timeSt, E.likeCt, E.isHidden, E.isReported, F.uID, F.uName, F.name, F.surname, G.locName
+            FROM Posts as E, Users as F, Locations as G
+            WHERE F.uName LIKE '%:search%' and F.uID=E.uID
+            ) AS T 
+            ORDER BY T.timeSt DESC
+            LIMIT 0, 20
+            ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':search', $search);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            return $result;
+       }catch (PDOException $e) {
+            #echo $e->getMessage();
+            return false;
+       }
+
     }
 
     public function getUserInfo($userID)
