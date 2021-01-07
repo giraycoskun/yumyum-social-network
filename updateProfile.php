@@ -2,7 +2,7 @@
 include_once 'components/session.php';
 require_once 'db/conn.php';
 
-
+$userID = $_SESSION['uID'];
 
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -12,11 +12,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     }
     else
     {
-        echo "update profile";
-    }
-    
+        $mail = trim($_POST['mail']);
+        $pass = trim($_POST['password']);
+        $age = strtolower(trim($_POST['age']));
+        $sex = strtolower(trim($_POST['sex']));
+        $bio = trim($_POST['bio']);
+        $fname = trim($_POST['fname']);
+        $lname = trim($_POST['lname']);
 
-    #header('Location: profile.php');
+        
+        $check = 0;
+        if($mail == "" or $pass=="")
+        {
+            $result = false;
+            $check = 1;
+        }
+        else
+        {
+            $result = $crud->updateUser($userID, $pass, $fname, $mail, $lname, $bio, $age, $sex);
+            $check = 2;
+
+        }        
+        if(!$result){
+            if($check==1)
+            {
+                echo '<div class="alert alert-danger">Fields are Empty or Username</div>';
+            }
+            else
+            {
+                echo '<div class="alert alert-danger">Username is already used!!</div>';
+            }
+        }
+        else
+        {
+            $orig_file = $_FILES["photo"]["tmp_name"];
+            $ext = pathinfo($_FILES["photo"]["name"], PATHINFO_EXTENSION);
+            $target_dir = 'files/users/';
+            $destination = "$target_dir$userID.$ext";
+            move_uploaded_file($orig_file,$destination);
+            
+            $result = $crud->getUser($mail, $pass);
+
+            $_SESSION['mail'] = $result['mail'];
+            $_SESSION['uID'] = $result['uID'];
+            $_SESSION['isAdmin'] = $result['isAdmin'];
+        }
+    }
+
+    header("Location: profile.php?id=$userID");
 }
 
 

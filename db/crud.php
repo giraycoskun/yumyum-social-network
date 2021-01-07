@@ -141,16 +141,25 @@ class crud{
         }
     }
 
-    public function updateUser($userID)
+    public function updateUser($userID, $pass, $fname, $mail, $lname, $bio, $age, $sex)
     {
+        #giray
         try{
-            $sql = "UPDATE Users SET Users WHERE Users.uID=:userID";
+            $sql = "UPDATE Users SET pw=:pass, name=:fname, surname=:lname, mail=:mail, bioContent=:bio, age=:age, sex=:sex  WHERE Users.uID=:userID";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':userID', $userID);
+            $stmt->bindparam(':pass', $pass);
+            $stmt->bindparam(':fname', $fname);
+            $stmt->bindparam(':mail', $mail);
+            $stmt->bindparam(':lname', $lname);
+            $stmt->bindparam(':bio', $bio);
+            $stmt->bindparam(':age', $age);
+            $stmt->bindparam(':sex', $sex);
             $stmt->execute();
-            $result = $stmt->fetch();
-            return $result;
+            #echo '<div class="alert alert-danger">Checkpoint 1 </div>';
+            return true;
        }catch (PDOException $e) {
+            #echo '<div class="alert alert-danger">Checkpoint 2 </div>';
             echo $e->getMessage();
             return false;
         }
@@ -177,7 +186,7 @@ class crud{
         }
     }
 
-    public function follow($userID, $sessionID)
+    public function followUser($userID, $sessionID)
     {
         try{
             $sql = "INSERT INTO UserFollowsUser (FollowerID, FolloweeID) VALUES (:sessionID, :userID);";
@@ -196,7 +205,7 @@ class crud{
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':sessionID', $sessionID);
             $stmt->execute();
-            echo '<div class="alert alert-danger">Checkpoint 1 </div>';
+            #echo '<div class="alert alert-danger">Checkpoint 1 </div>';
             return true;
             #echo "<p>$result</p>";
             
@@ -207,7 +216,7 @@ class crud{
         }
     }
 
-    public function unfollow($userID, $sessionID)
+    public function unfollowUser($userID, $sessionID)
     {
         try{
            
@@ -239,24 +248,115 @@ class crud{
         }
     }
 
+    public function unfollowLoc($locID, $sessionID)
+    {
+        try{
+           
+            $sql = "DELETE FROM UserFollowsLocations WHERE UserFollowsLocations.locID=:locID and UserFollowsLocations.uID=:sessionID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':locID', $locID);
+            $stmt->bindparam(':sessionID', $sessionID);
+            $stmt->execute();
+            
+            return true;
 
 
-        public function getUserName($postID){
-            try{
-                $sql = "SELECT * FROM Users, Posts WHERE Posts.uID = Users.uID and Posts.pID=:postID";
-                $stmt = $this->db->prepare($sql);
-                $stmt->bindparam(':postID', $postID);
-                $stmt->execute();
-                $result = $stmt->fetch();
-                return $result;
-           }catch (PDOException $e) {
-                echo $e->getMessage();
-                return false;
-            }
-    
+            
+       }catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+
+
+    public function getUserName($postID){
+        try{
+            $sql = "SELECT * FROM Users, Posts WHERE Posts.uID = Users.uID and Posts.pID=:postID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':postID', $postID);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            return $result;
+        }catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
         }
 
-    
-}
+    }
 
-?>
+    public function reportUser($reportedID){
+        try{
+            
+            
+            $sql = "UPDATE Users SET isReported = 1 WHERE Users.uID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $reportedID);
+            $stmt->execute();
+            
+
+            return true;
+            
+        }catch (PDOException $e) {
+        echo '<div class="alert alert-danger">Checkpoint 2 </div>';
+            echo $e->getMessage();
+            return false;
+        }
+
+    }
+
+    public function getFollowers($userID){
+        try{
+            
+            
+            $sql = "SELECT Users.uName FROM Users, UserFollowsUser WHERE Users.uID = UserFollowsUser.followerID and UserFollowsUser.followeeID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            return $result;
+            
+        }catch (PDOException $e) {
+        #echo '<div class="alert alert-danger">Checkpoint 2 </div>';
+            echo $e->getMessage();
+            return false;
+        }
+
+    }
+
+    public function getFollowing($userID){
+        try{
+            
+            
+            $sql = "SELECT Users.uName FROM Users, UserFollowsUser WHERE Users.uID = UserFollowsUser.followeeID and UserFollowsUser.followerID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            return $result;
+            
+        }catch (PDOException $e) {
+        echo '<div class="alert alert-danger">Checkpoint 2 </div>';
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getFollowedLocations($userID)
+    {
+        try{
+
+            $sql = "SELECT Locations.locName, Locations.locID FROM UserFollowsLocations, Locations WHERE UserFollowsLocations.uID=:userID and Locations.locID=UserFollowsLocations.locID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            return $result;
+            
+        }catch (PDOException $e) {
+        echo '<div class="alert alert-danger">Checkpoint 2 </div>';
+            echo $e->getMessage();
+            return false;
+        }
+    }
+}

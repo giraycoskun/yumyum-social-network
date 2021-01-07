@@ -9,6 +9,12 @@ $userID = $_GET['id'];
 $sessionID = $_SESSION['uID'];
 $isFollowing = $crud->isFollowing($userID, $sessionID);
 $result = $crud->getUserInfo($userID);
+
+if(!$result['isActive'])
+{
+    header("Location: userNotFound.php");
+}
+
 $userName = $result['uName'];
 $userFirstName = $result['name'];
 $userLastName = $result['surname'];
@@ -20,11 +26,12 @@ $userPP = $result['pp'];
 $userFollowerCount = $result['followerCt'];
 $userFollowingCount = $result['followCt'];
 
+
 ?>
 
 <div class="container mt-2">
     <h1>Hello,  <?php echo $_SESSION['username'] ?></h1>
-    <div class="card mb-3" style="max-width: 540px;">
+    <div class="card mb-3" style="max-width: 640px;">
     <div class="row g-0">
         <div class=" col-md-4">
             <img class="img-thumbnail img-fluid rounded mx-auto d-block" src="<?php echo $userPP?>" alt="Image Not Found">
@@ -35,25 +42,30 @@ $userFollowingCount = $result['followCt'];
             <p class="card-text"><b>Name: </b><?php echo $userFirstName." ".$userLastName ?></p>
             <p class="card-text"><b>Age: </b><?php echo $userAge?> - <b>Sex: </b><?php echo $userSex?></p>
             <p class="card-text"><b>Bio: </b><?php echo $userBio ?></p>
-            <p class="card-text"><b>Following: </b><?php echo $userFollowingCount ?>  -  <b>Follower: </b><?php echo $userFollowerCount ?></p>
+            <a class="btn btn-success" href="showFollow.php?id=<?php echo $userID ?>&action=following"><b>Following: </b><?php echo $userFollowingCount ?> </a>
+            <a class="btn btn-warning" href="showFollow.php?id=<?php echo $userID ?>&action=follower"><b>Follower: </b><?php echo $userFollowerCount ?></a>
+            <a class="btn btn-info" href="showFollow.php?id=<?php echo $userID ?>&action=showlocs"><b>Locations</b></a>
+            <!-- <p class="card-text"><b>Following: </b><?php echo $userFollowingCount ?>  -  <b>Follower: </b><?php echo $userFollowerCount ?></p>-->
             <p class="card-text"><small class="text-muted"><?php echo $userName." - ".$userMail ?></small></p>
             <!-- Button trigger modal -->
-            <? if ($sessionID == $userID): ?>
+            <?php if ($sessionID == $userID): ?>
             <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal">Edit</button>
             <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#deactivateModal">Deactivate</button>
-            <? elseif ($isFollowing): ?>
+            <?php elseif ($isFollowing): ?>
             <!--<button type="submit" class="btn btn-secondary" href="newpost.php">Unfollow</button>-->
             <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollow" role="button">Unfollow</a>
-            <? else: ?>
+            <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&action=follow" role="button">Report</a>
+            <?php else: ?>
                 <a class="btn btn-primary" href="following.php?id=<?php echo $userID ?>&action=follow" role="button">Follow</a>
-            <? endif; ?>
+                <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&action=follow" role="button">Report</a>
+            <?php endif; ?>
         </div>
         </div>
     </div>
     </div>
 </div>
 
-<form action="updateProfile.php" method="post" class="d-flex px-2">
+<form action="updateProfile.php" method="post" class="d-flex px-2" enctype="multipart/form-data">
 <!-- Modal Edit-->
     <div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -63,7 +75,7 @@ $userFollowingCount = $result['followCt'];
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                <?php require_once('form.php')?>
+                <?php include('form.php')?>
                 </div>
                 
             </div>

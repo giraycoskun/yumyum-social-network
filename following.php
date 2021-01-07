@@ -4,21 +4,27 @@ include_once 'components/session.php';
 require_once 'db/conn.php';
 
 
-$userID = $_GET['id'];
+$ID = $_GET['id'];
 $sessionID = $_SESSION['uID'];
 
 $action = $_GET['action'];
 
 if($action == "follow")
 {
-    $crud->follow($userID, $sessionID);
+    $crud->followUser($ID, $sessionID);
 }
-else
+else if($action == "unfollow")
 {
-    $crud->unfollow($userID, $sessionID);
+    $crud->unfollowUser($ID, $sessionID);
+}
+else if($action == "loc")
+{
+    $crud->unfollowLoc($ID, $sessionID);
+    #echo '<div class="alert alert-danger">Checkpoint 1 </div>';
+    header("Location: showFollow.php?id=$sessionID&action=showlocs");
 }
 
-header("Location: profile.php?id=$userID");
+#header("Location: profile.php?id=$ID");
 
 ?>
 

@@ -46,11 +46,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 } else if (isset($_SESSION['uName'])) {
   if($result['isAdmin']== false)
       {   
-        header("Location: feed.php");
+        header("Location: feed.php?id=$userID");
       }   
       else
       {
-        header("Location: admin.php");
+        header("Location: admin.php?id=$userID");
       }
 }
 ?>

@@ -1,5 +1,10 @@
 <?php
-include_once 'components/session.php'
+include_once 'components/session.php';
+
+$userID = $_SESSION['uID'];
+
+$user = $crud->getUserInfo($userID);
+
 ?>
 
 
@@ -9,19 +14,19 @@ include_once 'components/session.php'
     <h2><?php echo $_SESSION['username']?></h2>
         <div class="row mt-auto">
             <div class="col">
-            <input type="email" class="form-control" placeholder="Email" name="mail" >
+            <input type="email" class="form-control" value=<?php echo $user['mail'] ?> name="mail" >
             </div>
             <div class="col">
-            <input type="password" class="form-control" placeholder="Password" name="password" >
+            <input type="password" class="form-control" value=<?php echo $user['pw'] ?> name="password" >
             </div>
         </div>
 
         <div class="row mt-2">
             <div class="col">
-            <input type="number" min="1" max="120" class="form-control" placeholder="Age" name="age">
+            <input type="number" min="1" max="120" class="form-control" value=<?php echo $user['age'] ?> name="age">
             </div>
             <div class="col">
-                <select class="form-control" id="exampleFormControlSelect1" aria-placeholder="Sex" name="sex">
+                <select class="form-control" id="exampleFormControlSelect1" value=<?php echo $user['sex'] ?> name="sex">
                     <option>Sex</option>
                     <option>M</option>
                     <option>F</option>
@@ -31,16 +36,16 @@ include_once 'components/session.php'
 
         <div class="row mt-2">
             <div class="col">
-                <input type="text" class="form-control" placeholder="First name" name="fname" >
+                <input type="text" class="form-control" value=<?php echo $user['name'] ?> name="fname" >
             </div>
             <div class="col">
-                <input type="text" class="form-control" placeholder="Last name" name="lname" >
+                <input type="text" class="form-control"value=<?php echo $user['surname'] ?> name="lname" >
             </div>
         </div>
 
         <div class="row mt-2">
             <div class="col">
-            <input type="text" class="form-control" placeholder="Bio" name="bio">
+            <input type="text" class="form-control" value="<?php echo $user['bioContent'] ?>" name="bio">
             </div>
         </div>
      

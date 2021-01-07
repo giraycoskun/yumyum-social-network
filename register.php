@@ -43,25 +43,30 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             }
             
         }else{
+
+            $result = $crud->getUser($mail, $pass);
+            $userID = $result['uID'];
+
             $orig_file = $_FILES["photo"]["tmp_name"];
             $ext = pathinfo($_FILES["photo"]["name"], PATHINFO_EXTENSION);
             $target_dir = 'files/users/';
-            $destination = "$target_dir$username.$ext";
+            $destination = "$target_dir$userID.$ext";
             move_uploaded_file($orig_file,$destination);
             
-            $result = $crud->getUser($mail, $pass);
+           
 
             $_SESSION['mail'] = $result['mail'];
             $_SESSION['uID'] = $result['uID'];
+            $userID = $_SESSION['uID'];
             $_SESSION['isAdmin'] = $result['isAdmin'];
             if($result['isAdmin']== false)
             {   
                 #echo '<div class="alert alert-danger">Checkpoint 2 </div>';
-                header("Location: feed.php");
+                header("Location: feed.php?id=$userID");
             }   
             else
             {
-                header("Location: admin.php");
+                header("Location: admin.php?id=$userID");
             }
         }
 
