@@ -12,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $mail = trim($_POST['mail']);
         $pass = trim($_POST['password']);
         $age = strtolower(trim($_POST['age']));
-        $sex = strtolower(trim($_POST['sex']));
         $username = trim($_POST['username']);
         $bio = $_POST['bio'];
         $fname = trim($_POST['fname']);
@@ -27,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         }
         else
         {
-            $result = $crud->insertUser($username, $pass, $fname, $mail, $lname, $bio, $age, $sex);
+            $result = $crud->insertUser($username, $pass, $fname, $mail, $lname, $bio, $age);
             $check = 2;
 
         }        
@@ -98,13 +97,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         <div class="row mt-2">
             <div class="col">
             <input type="number" min="1" max="120" class="form-control" placeholder="Age" name="age">
-            </div>
-            <div class="col">
-                <select class="form-control" id="exampleFormControlSelect1" aria-placeholder="Sex" name="sex">
-                    <option>Sex</option>
-                    <option>M</option>
-                    <option>F</option>
-                </select>
             </div>
         </div>
 

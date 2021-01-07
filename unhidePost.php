@@ -1,4 +1,5 @@
 <?php 
+include_once 'components/session.php';
 require_once 'db/conn.php';
 
 if(!isset($_GET['id']))

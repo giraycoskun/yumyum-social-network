@@ -25,13 +25,6 @@ $user = $crud->getUserInfo($userID);
             <div class="col">
             <input type="number" min="1" max="120" class="form-control" value=<?php echo $user['age'] ?> name="age">
             </div>
-            <div class="col">
-                <select class="form-control" id="exampleFormControlSelect1" value=<?php echo $user['sex'] ?> name="sex">
-                    <option>Sex</option>
-                    <option>M</option>
-                    <option>F</option>
-                </select>
-            </div>
         </div>
 
         <div class="row mt-2">

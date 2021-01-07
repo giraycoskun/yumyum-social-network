@@ -15,7 +15,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         $mail = trim($_POST['mail']);
         $pass = trim($_POST['password']);
         $age = strtolower(trim($_POST['age']));
-        $sex = strtolower(trim($_POST['sex']));
         $bio = trim($_POST['bio']);
         $fname = trim($_POST['fname']);
         $lname = trim($_POST['lname']);

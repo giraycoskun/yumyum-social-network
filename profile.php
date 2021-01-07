@@ -10,6 +10,7 @@ $sessionID = $_SESSION['uID'];
 $isFollowing = $crud->isFollowing($userID, $sessionID);
 $result = $crud->getUserInfo($userID);
 
+
 if(!$result['isActive'])
 {
     header("Location: userNotFound.php");
@@ -40,7 +41,6 @@ $userFollowingCount = $result['followCt'];
         <div class="card-body">
             <h5 class="card-title">Profile</h5>
             <p class="card-text"><b>Name: </b><?php echo $userFirstName." ".$userLastName ?></p>
-            <p class="card-text"><b>Age: </b><?php echo $userAge?> - <b>Sex: </b><?php echo $userSex?></p>
             <p class="card-text"><b>Bio: </b><?php echo $userBio ?></p>
             <a class="btn btn-success" href="showFollow.php?id=<?php echo $userID ?>&action=following"><b>Following: </b><?php echo $userFollowingCount ?> </a>
             <a class="btn btn-warning" href="showFollow.php?id=<?php echo $userID ?>&action=follower"><b>Follower: </b><?php echo $userFollowerCount ?></a>
@@ -124,21 +124,39 @@ $userFollowingCount = $result['followCt'];
 
 <div class="container mb-4">
     
-    <div class="row row-cols-1 row-cols-md-3 mb-4 g-4">
-        <!-- my php code which uses x-path to get results from xml query. -->
+    <div class="row row-cols-1 row-cols-md-2 mb-4 g-4">
         
-        <?php $results = $crud->getPostsbyUser($userID);
-            while($post = $results->fetch(PDO::FETCH_ASSOC)){?>
-            <div class="col">
-                <div class="card">
+        <?php 
+            $userID = $_GET['id'];
+            $posts = $crud->getPostsbyUser($userID);
+            foreach( $posts as $post ) {?>
+            <?php if ($post['isHidden']== 0 ):?>
+            <?php $checkLike = $crud->isPostLikedByUser($sessionID, $post['pID']); ?>
+            <div class="col align-items-stretch">
+                <div class="card h-100">
                     <img src="..." class="card-img-top" alt="...">
                     <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">This is a longer card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                        <h5 class="card-title"><?php echo $post['uName']?></h5>
+                        <p class="card-text"><?php echo $post['txt']?></p>
+                        <p class="card-text"><b>Likes:</b>  <?php echo $post['likeCt']?></p>
+                        <p class="card-text"><b>Hidden: </b><?php echo $post['isHidden']?></p>
+                        <p class="card-text"><?php echo $post['timeSt']?></p>
+                        <p class="card-text"><?php echo $post['mediaPath']?></p> 
+                        <?php if ($sessionID == $userID ): ?>
+                            <a class="btn btn-danger" href="hidePost.php?id=<?php echo $post['pID'] ?>&action=delete" role="button">Delete</a>
+                        <?php elseif(!$checkLike): ?>
+                            <a class="btn btn-primary" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=like" role="button">Like</a>
+                            <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button">Report</a>
+                        <?php elseif($checkLike): ?>
+                            <a class="btn btn-warning" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=dislike" role="button">Dislike</a>
+                            <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button">Report</a>
+                        <?php endif; ?>
+                        
                     </div>
                 </div>
             </div>
-            <?php }?>
+            <?php endif; ?>
+        <?php }?>
     </div>
 </div> <!--container div  -->
 

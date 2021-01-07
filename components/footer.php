@@ -6,7 +6,7 @@
 
 <nav class="navbar fixed-bottom navbar-light bg-light">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">Fixed bottom</a>
+    <a class="navbar-brand" href="https://github.com/giraycoskun/YumYum-Social-Network">Created for CS306 </a>
   </div>
 </nav>
 

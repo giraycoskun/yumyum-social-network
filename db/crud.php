@@ -103,9 +103,9 @@ class crud{
     
 
 
-    public function insertUser($username, $pass, $fname, $mail, $lname, $bio, $age, $sex){
+    public function insertUser($username, $pass, $fname, $mail, $lname, $bio, $age){
         try{
-            $sql = "INSERT INTO Users (uName, pw, name, surname, mail, bioContent, age, sex ) VALUES(:username, :pass, :fname,  :lname,  :mail, :bio, :age, :sex ); ";
+            $sql = "INSERT INTO Users (uName, pw, name, surname, mail, bioContent, age) VALUES(:username, :pass, :fname,  :lname,  :mail, :bio, :age); ";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':username', $username);
             $stmt->bindparam(':pass', $pass);
@@ -114,7 +114,6 @@ class crud{
             $stmt->bindparam(':mail', $mail);
             $stmt->bindparam(':bio', $bio);
             $stmt->bindparam(':age', $age);
-            $stmt->bindparam(':sex', $sex);
             $stmt->execute();
             #echo "New record created successfully";
             return true;
@@ -127,11 +126,12 @@ class crud{
     public function getPostsbyUser($uID)
     {
         try{
-            $sql = "SELECT * FROM Posts WHERE Posts.uID = :uID";
+            $sql = "SELECT * FROM Posts, Users WHERE Posts.uID = :uID and Users.uID=:uID";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':uID', $uID);
             $stmt->execute();
-            return $stmt;
+            $result = $stmt->fetchAll();
+            return $result;
        }catch (PDOException $e) {
             #echo $e->getMessage();
        }
@@ -165,11 +165,11 @@ class crud{
         }
     }
 
-    public function updateUser($userID, $pass, $fname, $mail, $lname, $bio, $age, $sex)
+    public function updateUser($userID, $pass, $fname, $mail, $lname, $bio, $age)
     {
         #giray
         try{
-            $sql = "UPDATE Users SET pw=:pass, name=:fname, surname=:lname, mail=:mail, bioContent=:bio, age=:age, sex=:sex  WHERE Users.uID=:userID";
+            $sql = "UPDATE Users SET pw=:pass, name=:fname, surname=:lname, mail=:mail, bioContent=:bio, age=:age  WHERE Users.uID=:userID";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':userID', $userID);
             $stmt->bindparam(':pass', $pass);
@@ -178,7 +178,6 @@ class crud{
             $stmt->bindparam(':lname', $lname);
             $stmt->bindparam(':bio', $bio);
             $stmt->bindparam(':age', $age);
-            $stmt->bindparam(':sex', $sex);
             $stmt->execute();
             #echo '<div class="alert alert-danger">Checkpoint 1 </div>';
             return true;
@@ -329,6 +328,26 @@ class crud{
 
     }
 
+    public function reportPost($postID){
+        try{
+            
+            
+            $sql = "UPDATE Posts SET isReported = 1 WHERE Posts.pID=:postID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':postID', $postID);
+            $stmt->execute();
+            
+
+            return true;
+            
+        }catch (PDOException $e) {
+        echo '<div class="alert alert-danger">Checkpoint 2 </div>';
+            echo $e->getMessage();
+            return false;
+        }
+
+    }
+
     public function getFollowers($userID){
         try{
             
@@ -379,6 +398,74 @@ class crud{
             
         }catch (PDOException $e) {
         echo '<div class="alert alert-danger">Checkpoint 2 </div>';
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function likePost($sessionID, $postID)
+    {
+        try {
+
+            $sql = "INSERT INTO UserLikesPosts (likerID, pID) VALUES (:sessionID, :postID);";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':sessionID', $sessionID);
+            $stmt->bindparam(':postID', $postID);
+            $stmt->execute();
+
+            $sql = "UPDATE Posts SET likeCt = likeCt + 1 WHERE Posts.pID=:postID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':postID', $postID);
+            $stmt->execute();
+
+            return true;
+            
+        }catch (PDOException $e) {
+            #echo '<div class="alert alert-danger">Checkpoint 2 </div>';
+            #echo $e->getMessage();
+            return false;
+        }
+    }
+    public function dislikePost($sessionID, $postID)
+    {
+        try {
+
+            $sql = "DELETE FROM UserLikesPosts WHERE UserLikesPosts.likerID=:sessionID and UserLikesPosts.pID=:postID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':sessionID', $sessionID);
+            $stmt->bindparam(':postID', $postID);
+            $stmt->execute();
+
+            $sql = "UPDATE Posts SET likeCt = likeCt - 1 WHERE Posts.pID=:postID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':postID', $postID);
+            $stmt->execute();
+
+            return true;
+            
+        }catch (PDOException $e) {
+            #echo '<div class="alert alert-danger">Checkpoint 2 </div>';
+            #echo $e->getMessage();
+            return false;
+        }
+        
+    }
+    public function isPostLikedByUser($sessionID, $postID)
+    {
+        try{
+            $sql = "SELECT * FROM UserLikesPosts WHERE UserLikesPosts.likerID=:sessionID and UserLikesPosts.pID=:postID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':postID', $postID);
+            $stmt->bindparam(':sessionID', $sessionID);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            #echo "<p>$result</p>";
+            if(empty($result))
+            {
+                return false;
+            }
+            return true;
+       }catch (PDOException $e) {
             echo $e->getMessage();
             return false;
         }

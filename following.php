@@ -24,7 +24,7 @@ else if($action == "loc")
     header("Location: showFollow.php?id=$sessionID&action=showlocs");
 }
 
-#header("Location: profile.php?id=$ID");
+header("Location: profile.php?id=$ID");
 
 ?>
 
