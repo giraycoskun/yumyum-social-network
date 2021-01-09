@@ -42,6 +42,7 @@ $type = $_POST['type'];
                             <p class="card-text"><b>Username: </b><?php echo $userName ?></p>
                             <p class="card-text"><b>Name Surname: </b><?php echo $userFirstName . " " . $userLastName ?></p>
                             <p class="card-text"><b>Bio: </b><?php echo $userBio ?></p>
+                            <a href="profile.php?id=<?php echo $userID ?>" class="btn btn-primary">View</a>
                             <a class="btn btn-success" href="showFollow.php?id=<?php echo $userID ?>&action=following"><b>Following: </b><?php echo $userFollowingCount ?> </a>
                             <a class="btn btn-warning" href="showFollow.php?id=<?php echo $userID ?>&action=follower"><b>Follower: </b><?php echo $userFollowerCount ?></a>
                             <a class="btn btn-info" href="showFollow.php?id=<?php echo $userID ?>&action=showlocs"><b>Locations</b></a>
