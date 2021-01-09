@@ -131,7 +131,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         <div class="row mt-2">
             <div class="col container">
                 <button class="btn btn-lg btn-primary " name="submit" type="submit">Submit</button>
-                <button class="btn btn-lg btn-secondary " name="back" type="submit" onClick="removeRequired(this.form)">Sign In</button>
+                <button class="btn btn-lg btn-secondary " name="back" type="submit">Sign In</button>
                 
             </div>
         </div>

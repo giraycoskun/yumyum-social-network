@@ -25,6 +25,10 @@ if(isset($_GET['feed']))
 {
     header("Location: feed.php?id=$sessionID");
 }
+elseif(isset($_GET['post']))
+{
+    header("Location: post.php?id=$postID");
+}
 else
 {
     header("Location: profile.php?id=$userID");

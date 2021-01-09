@@ -45,7 +45,7 @@ $userFollowingCount = $result['followCt'];
             <a class="btn btn-success" href="showFollow.php?id=<?php echo $userID ?>&action=following"><b>Following: </b><?php echo $userFollowingCount ?> </a>
             <a class="btn btn-warning" href="showFollow.php?id=<?php echo $userID ?>&action=follower"><b>Follower: </b><?php echo $userFollowerCount ?></a>
             <a class="btn btn-info" href="showFollow.php?id=<?php echo $userID ?>&action=showlocs"><b>Locations</b></a>
-            <a class="btn btn-info" href="showTags.php?id=<?php echo $userID ?>&action=tags"><b>Tags</b></a>
+            <a class="btn btn-dark" href="showFollow.php?id=<?php echo $userID ?>&action=tags"><b>Tags</b></a>
             <!-- <p class="card-text"><b>Following: </b><?php echo $userFollowingCount ?>  -  <b>Follower: </b><?php echo $userFollowerCount ?></p>-->
             <p class="card-text"><small class="text-muted"><?php echo $userName." - ".$userMail ?></small></p>
             <!-- Button trigger modal -->
@@ -120,6 +120,24 @@ $userFollowingCount = $result['followCt'];
     </div>
 </form>
 
+<form action="updatePost.php" method="post" class="d-flex px-2" enctype="multipart/form-data">
+<!-- Modal Edit-->
+    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Post Edit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                <?php include('form.php')?>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+</form>
+
 
 
 
@@ -136,7 +154,7 @@ $userFollowingCount = $result['followCt'];
             <div class="col align-items-stretch">
                 <div class="card h-100">
                     <img src="..." class="card-img-top" alt="...">
-                    <div class="card-body">
+                    <div class="card-body d-flex flex-column">
                         <h5 class="card-title"><?php echo $post['uName']?></h5>
                         <p class="card-text"><?php echo $post['txt']?></p>
                         <p class="card-text"><b>Likes:</b>  <?php echo $post['likeCt']?></p>
@@ -148,23 +166,26 @@ $userFollowingCount = $result['followCt'];
                         <?php }?>
                         <p class="card-text"><?php echo $post['timeSt']?></p>
                         <p class="card-text"><?php echo $post['mediaPath']?></p> 
-                        <?php if ($sessionID == $userID ): ?>
-                            <a class="btn btn-danger" href="hidePost.php?id=<?php echo $post['pID'] ?>&action=delete" role="button">Delete</a>
-                        <?php elseif(!$checkLike): ?>
-                            <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=profile" method="post" class="form-control mb-2">
-                                <input type="text" name="content" class="form-control mb-2">
-                                <button type="submit" class="btn btn-primary" href="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=profile" role="button">Comment</button>
-                            </form>
-                            <a class="btn btn-primary" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=like" role="button">Like</a>
-                            <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button">Report</a>
-                        <?php elseif($checkLike): ?>
-                            <form action="comment.php?id=1" method="post" class="form-control mb-2">
-                                <input type="text" name="content" class="form-control">
-                                <button type="submit" class="btn btn-primary" href="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=profile" role="button">Comment</button>
-                            </form>
-                            <a class="btn btn-warning" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=dislike" role="button">Dislike</a>
-                            <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button">Report</a>
-                        <?php endif; ?>
+                        <div>
+                            <?php if ($sessionID == $userID ): ?>
+                                <a class="btn btn-danger align-item-end" href="hidePost.php?id=<?php echo $post['pID'] ?>&action=delete" role="button">Delete</a>
+                                <button type="button" class="btn btn-warning align-item-end" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
+                            <?php elseif(!$checkLike): ?>
+                                <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=profile" method="post" class="form-control mb-2">
+                                    <input type="text" name="content" class="form-control mb-2">
+                                    <button type="submit" class="btn btn-primary" href="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=profile" role="button">Comment</button>
+                                </form>
+                                <a class="btn btn-primary" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=like" role="button">Like</a>
+                                <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button">Report</a>
+                            <?php elseif($checkLike): ?>
+                                <form action="comment.php?id=1" method="post" class="form-control mb-2">
+                                    <input type="text" name="content" class="form-control">
+                                    <button type="submit" class="btn btn-primary" href="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=profile" role="button">Comment</button>
+                                </form>
+                                <a class="btn btn-warning" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=dislike" role="button">Dislike</a>
+                                <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button">Report</a>
+                            <?php endif; ?>
+                        </div>
                         
                     </div>
                 </div>

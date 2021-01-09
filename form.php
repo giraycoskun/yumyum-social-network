@@ -23,6 +23,9 @@ $user = $crud->getUserInfo($userID);
 
         <div class="row mt-2">
             <div class="col">
+                <input type="text" class="form-control" value=<?php echo $user['uName'] ?> name="username" >
+            </div>   
+            <div class="col">
             <input type="number" min="1" max="120" class="form-control" value=<?php echo $user['age'] ?> name="age">
             </div>
         </div>

@@ -14,6 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     {
         $mail = trim($_POST['mail']);
         $pass = trim($_POST['password']);
+        $uname = trim($_POST['username']);
         $age = strtolower(trim($_POST['age']));
         $bio = trim($_POST['bio']);
         $fname = trim($_POST['fname']);
@@ -21,14 +22,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
         
         $check = 0;
-        if($mail == "" or $pass=="")
+        if($mail == "" or $pass=="" or $uname == "")
         {
             $result = false;
             $check = 1;
         }
         else
         {
-            $result = $crud->updateUser($userID, $pass, $fname, $mail, $lname, $bio, $age, $sex);
+            $result = $crud->updateUser($userID, $uname ,$pass, $fname, $mail, $lname, $bio, $age, $sex);
             $check = 2;
 
         }        

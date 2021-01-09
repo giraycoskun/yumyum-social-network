@@ -21,6 +21,10 @@ elseif($action == "profile")
 {
     header("Location: profile.php?id=$userID");
 }
+elseif($action == "post")
+{
+    header("Location: post.php?id=$postID");
+}
 
     
 ?>

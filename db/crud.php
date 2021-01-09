@@ -210,13 +210,14 @@ class crud{
         }
     }
 
-    public function updateUser($userID, $pass, $fname, $mail, $lname, $bio, $age)
+    public function updateUser($userID, $uname ,$pass, $fname, $mail, $lname, $bio, $age)
     {
         #giray
         try{
-            $sql = "UPDATE Users SET pw=:pass, name=:fname, surname=:lname, mail=:mail, bioContent=:bio, age=:age  WHERE Users.uID=:userID";
+            $sql = "UPDATE Users SET pw=:pass, uName=:uname ,name=:fname, surname=:lname, mail=:mail, bioContent=:bio, age=:age  WHERE Users.uID=:userID";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':userID', $userID);
+            $stmt->bindparam(':uname', $uname);
             $stmt->bindparam(':pass', $pass);
             $stmt->bindparam(':fname', $fname);
             $stmt->bindparam(':mail', $mail);
@@ -416,7 +417,7 @@ class crud{
         try{
             
             
-            $sql = "SELECT Users.uName FROM Users, UserFollowsUser WHERE Users.uID = UserFollowsUser.followeeID and UserFollowsUser.followerID=:userID";
+            $sql = "SELECT Users.uName, Users.uID FROM Users, UserFollowsUser WHERE Users.uID = UserFollowsUser.followeeID and UserFollowsUser.followerID=:userID";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':userID', $userID);
             $stmt->execute();
@@ -519,7 +520,56 @@ class crud{
     public function getCommentsforPost($postID)
     {
         try{
-            $sql = "SELECT * FROM Users, Comments WHERE Users.uID=Comments.uID and Comments.pID=:postID";
+            $sql = "SELECT * FROM Users, Comments WHERE Users.uID=Comments.uID and Comments.pID=:postID ORDER BY Comments.timeSt DESC";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':postID', $postID);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+
+            return $result;
+       }catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getLocationforPost($postID)
+    {
+        try{
+            $sql = "SELECT Locations.locName FROM Posts, Locations WHERE Locations.locID=Posts.locID and Posts.pID=:postID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':postID', $postID);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+
+            return $result;
+       }catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getTagsforPost($postID)
+    {
+        try{
+            $sql = "SELECT Tags.tagName, Tags.tagID FROM Tags, PostsHasTags WHERE Tags.tagID=PostsHasTags.tID and PostsHasTags.pID=:postID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':postID', $postID);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+
+            return $result;
+       }catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getLikersforPost($postID)
+    {
+        #TODO
+        try{
+            $sql = "SELECT Users.uName, Users.uID FROM Users, UserLikesPosts WHERE Users.uID=UserLikesPosts.likerID and UserLikesPosts.pID=:postID";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':postID', $postID);
             $stmt->execute();
