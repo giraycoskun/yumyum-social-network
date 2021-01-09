@@ -24,6 +24,16 @@ else if($action == "loc")
     header("Location: showFollow.php?id=$sessionID&action=showlocs");
 }
 
+else if($action == "tags")
+{
+    $crud->unfollowTag($ID, $sessionID);
+    #echo '<div class="alert alert-danger">Checkpoint 1 </div>';
+    header("Location: showTags.php?id=$sessionID&action=tags");
+}
+
+
+
+
 header("Location: profile.php?id=$ID");
 
 ?>

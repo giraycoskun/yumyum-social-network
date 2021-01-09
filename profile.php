@@ -32,7 +32,7 @@ $userFollowingCount = $result['followCt'];
 
 <div class="container mt-2">
     <h1>Hello,  <?php echo $_SESSION['username'] ?></h1>
-    <div class="card mb-3" style="max-width: 640px;">
+    <div class="card mb-3" style="max-width: 660px;">
     <div class="row g-0">
         <div class=" col-md-4">
             <img class="img-thumbnail img-fluid rounded mx-auto d-block" src="<?php echo $userPP?>" alt="Image Not Found">
@@ -45,6 +45,7 @@ $userFollowingCount = $result['followCt'];
             <a class="btn btn-success" href="showFollow.php?id=<?php echo $userID ?>&action=following"><b>Following: </b><?php echo $userFollowingCount ?> </a>
             <a class="btn btn-warning" href="showFollow.php?id=<?php echo $userID ?>&action=follower"><b>Follower: </b><?php echo $userFollowerCount ?></a>
             <a class="btn btn-info" href="showFollow.php?id=<?php echo $userID ?>&action=showlocs"><b>Locations</b></a>
+            <a class="btn btn-info" href="showTags.php?id=<?php echo $userID ?>&action=tags"><b>Tags</b></a>
             <!-- <p class="card-text"><b>Following: </b><?php echo $userFollowingCount ?>  -  <b>Follower: </b><?php echo $userFollowerCount ?></p>-->
             <p class="card-text"><small class="text-muted"><?php echo $userName." - ".$userMail ?></small></p>
             <!-- Button trigger modal -->

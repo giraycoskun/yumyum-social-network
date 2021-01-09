@@ -548,4 +548,44 @@ class crud{
             return false;
         }
     }
+
+
+
+    public function getFollowedTags($userID){
+        try{
+
+            $sql = "SELECT Tags.tagName, Tags.tagID FROM UserFollowsTags, Tags WHERE UserFollowsTags.uID=:userID and Tags.tagID=UserFollowsTags.tID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            return $result;
+            
+        }catch (PDOException $e) {
+        echo '<div class="alert alert-danger">Checkpoint 2 </div>';
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    
+    public function unfollowTag($tagID, $sessionID){
+        try{
+           
+            $sql = "DELETE FROM UserFollowsTags WHERE UserFollowsTags.tID=:tagID and UserFollowsTags.uID=:sessionID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':tagID', $tagID);
+            $stmt->bindparam(':sessionID', $sessionID);
+            $stmt->execute();
+            
+            return true;
+
+
+            
+       }catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
 }
