@@ -1,72 +1,67 @@
-<?php 
+<?php
 
 $title = 'Post';
 require_once 'components/header.php';
-require_once 'components/auth_check.php'; 
+require_once 'components/auth_check.php';
 require_once 'db/conn.php'
 //echo "hi";
 ?>
-<?php 
-if(!isset($_GET['id']))
-{
-    echo "bir sıkıntı var";
-    
-} 
-else
-{
+<?php
+if (!isset($_GET['id'])) {
+  echo "bir sıkıntı var";
+} else {
 
-    echo "cildircam<br>";
-    
-    $id = $_GET['id'];
-    echo "cildircam<br>";
-    
-    $results = $crud->getPostByID($id);
-    echo "cildircam<br>";
-    $results = $results->fetch();
 
-    echo "cildircam<br>";
-    echo "<br>". $results['pID']. "<br>";
 
-    echo "cildircam<br>";
+  $id = $_GET['id'];
+
+
+  $post = $crud->getPostByID($id);
 }
 ?>
 
 
 
 
-<div class="container posts-content">
-    <div class="row">
-        <div class="col-lg-6">
-            <div class="card mb-4">
-              <div class="card-body">
-                <div class="media mb-3">
-                  <img src="https://bootdey.com/img/Content/avatar/avatar3.png" class="d-block ui-w-40 rounded-circle" alt=""> <?php   #profil fotosu bizim directory?> 
-                  <div class="media-body ml-3">
-                    Kenneth Frazier 
-                    <?php $willScreened = $results["uName"];?>
-                    <?php echo $willScreened; ?>
-                    <div class="text-muted small">3 days ago</div>
-                  </div>
-                </div>
-            
-                <p> <?php   #php kodu yaz buraya post.content?> 
-                  Sen Abdulhamiti savundun!
-                </p>
-                <a href="javascript:void(0)" class="ui-rect ui-bg-cover" style="background-image: url('https://bootdey.com/img/Content/avatar/avatar3.png');"></a>
-              </div>
-              <div class="card-footer">
-                <a href="javascript:void(0)" class="d-inline-block text-muted">
-                    <strong>123</strong> Likes</small> <?php   #post.likeNumber?> 
-                </a>
-                <a href="javascript:void(0)" class="d-inline-block text-muted ml-3">
-                    <strong>12</strong> Comments</small> <?php   #post.commentNumber?> 
-                </a>
-              </div>
-            </div>
+<div class="container mb-4">
+  <h1>Welcome to Home</h1>
+
+  <div class="row row-cols-1 row-cols-md-2 mb-4 g-4">
+
+    <?php
+    $userID = $post['uID']; { ?>
+      <div class="col align-items-stretch">
+        <div class="card h-100">
+          <img src="..." class="card-img-top" alt="...">
+          <div class="card-body">
+            <a href="profile.php?id=<?php echo $post['uID'] ?>">
+              <h5 class="card-title"><?php echo $post['uName'] ?></h5>
+            </a>
+            <p class="card-text"><?php echo $post['txt'] ?></p>
+            <p class="card-text"><b>Likes:</b> <?php echo $post['likeCt'] ?></p>
+            <p class="card-text"><b>Comments:</b></p>
+            <?php
+            $comments = $crud->getCommentsforPost($post['pID']);
+            foreach ($comments as $comment) { ?>
+              <p class="card-text"><b> <?php echo $comment['uName'] ?> </b>: <?php echo $comment['content'] ?> - <?php echo $comment['timeSt'] ?> </p>
+            <?php } ?>
+            <p class="card-text"><?php echo $post['timeSt'] ?></p>
+            <p class="card-text"><?php echo $post['mediaPath'] ?></p>
+
+            <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=feed" method="post" class="form-control mb-2">
+              <input type="text" name="content" class="form-control mb-2">
+              <button type="submit" class="btn btn-primary" href="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=profile" role="button">Comment</button>
+            </form>
+            <a class="btn btn-warning" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=dislike&feed" role="button">Dislike</a>
+            <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button&feed">Report</a>
+
+
+          </div>
         </div>
-            </div>
-        </div>
-    </div>
+      </div>
+
+    <?php } ?>
+  </div>
 </div>
 
-<?php require_once 'components/footer.php'; ?> 
+<?php require_once 'components/footer.php'; ?>

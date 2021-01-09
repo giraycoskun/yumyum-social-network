@@ -8,6 +8,8 @@ require_once 'db/conn.php';
 $sessionID = $_SESSION['uID'];
 $userID = $sessionID;
 $search = $_POST['search'];
+$type = $_POST['type'];
+echo $type . "<br>";
 #echo "User ID: ".$userID;
 #echo " Session ID: ".$_SESSION['uID'];
 #$posts = $crud->getPostsForSeach($search);
