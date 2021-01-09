@@ -164,27 +164,38 @@ class crud{
             return false;
        }
     }
-
-    public function getPostsForSeach($search)
+    public function getUsersBySearch($search)
     {
         #TODO
         try{
-            $sql = "
-            SELECT * FROM
-            (
-            SELECT A.pID, A.txt, A.mediaPath, A.locID, A.timeSt, A.likeCt, A.isHidden, A.isReported, B.uID, B.uName, B.name, B.surname, C.locName
-            FROM Posts as A, Users as B, Locations as C
-            WHERE A.txt LIKE '%:search%' and A.uID=B.uID and C.locID = A.locID
-            UNION
-            SELECT E.pID, E.txt, E.mediaPath, E.locID, E.timeSt, E.likeCt, E.isHidden, E.isReported, F.uID, F.uName, F.name, F.surname, G.locName
-            FROM Posts as E, Users as F, Locations as G
-            WHERE F.uName LIKE '%:search%' and F.uID=E.uID
-            ) AS T 
-            ORDER BY T.timeSt DESC
-            LIMIT 0, 20
-            ";
+           $sql = "SELECT DISTINCT  u.uID,  u.uName, u.name, u.surname, u.bioContent,u.followCt, u.followerCt,u.pp
+           from Users u
+           where u.uName LIKE '%$search%' or u.name LIKE '%$search%' or u.surname LIKE '%$search%' or (concat(u.name,' ',u.surname )LIKE  '%$search%') and u.isActive = 1;";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindparam(':search', $search);
+            #$stmt->bindparam(':search', $search);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            return $result;
+       }catch (PDOException $e) {
+            #echo $e->getMessage();
+            return false;
+       }
+
+    }
+    public function getPostsForSearch($search)
+    {
+        #TODO
+        try{
+            $sql = "SELECT DISTINCT p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt FROM Posts p, Users u, Locations t 
+            WHERE p.isHidden = 0 and p.uID = u.uID and p.txt LIKE '%$search%' and t.locID = p.locID 
+            UNION 
+            SELECT DISTINCT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt from Locations t, Users u, Posts p where t.locName LIKE '%$search%' and t.locID = p.locID and p.uID = u.uID 
+            UNION 
+            SELECT DISTINCT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, f.locName, p.txt 
+            from Tags t, Users u, PostsHasTags ph, Posts p, Locations f 
+            where t.tagName LIKE '%$search%' and t.tagID = ph.tID and ph.pID = p.pID and p.uID = u.uID and f.locID = p.locID";
+            $stmt = $this->db->prepare($sql);
+            #$stmt->bindparam(':search', $search);
             $stmt->execute();
             $result = $stmt->fetchAll();
             return $result;
@@ -639,3 +650,5 @@ class crud{
     }
 
 }
+
+
