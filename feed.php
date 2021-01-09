@@ -27,7 +27,7 @@ $sessionID = $_SESSION['uID'];
             foreach( $posts as $post ) {?>
             <?php if ($post['isHidden']== 0 ):?>
             <?php $checkLike = $crud->isPostLikedByUser($sessionID, $post['pID']); ?>
-            <div class="col align-items-stretch rounded">
+            <div class="col align-items-stretch rounded" >
                 <div class="card h-100">
                     <img src="..." class="card-img-top" alt="...">
                     <div class="card-body">
