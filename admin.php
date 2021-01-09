@@ -61,6 +61,7 @@ require_once 'db/conn.php'
           <tr>
             <th scope="col">User ID</th>
             <th scope="col">User Name</th>
+            <th scope="col">Banned Until</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -73,6 +74,7 @@ require_once 'db/conn.php'
             <tr>
               <td><?php echo $row['uID'] ?></td>
               <td><?php echo $row['uName'] ?></td>
+              <td><?php echo $row['bannedUntil'] ?></td>
               <td>
                 <form action="unsuspendUser.php?id=<?php echo $row['uID'] ?>" method="POST">
                   <a href="profile.php?id=<?php echo $row['uID'] ?>" class="btn btn-primary">View</a>

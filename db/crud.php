@@ -138,11 +138,11 @@ class crud{
     }
     public function getPostByID($pID){
         try{
-            $sql = "select * from Posts,Users where Posts.pID = :pID and Posts.uID = Users.uID ";
+            $sql = "select * from Posts,Users where Posts.pID = :pID and Posts.uID = Users.uID; ";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':pID', $pID);
             $stmt->execute();
-            $result = $stmt;
+            $result = $stmt->fetch();
             return $result;
        }catch (PDOException $e) {
             echo $e->getMessage();
