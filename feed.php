@@ -27,21 +27,24 @@ $sessionID = $_SESSION['uID'];
             foreach( $posts as $post ) {?>
             <?php if ($post['isHidden']== 0 ):?>
             <?php $checkLike = $crud->isPostLikedByUser($sessionID, $post['pID']); ?>
-            <div class="col align-items-stretch">
+            <div class="col align-items-stretch rounded">
                 <div class="card h-100">
                     <img src="..." class="card-img-top" alt="...">
                     <div class="card-body">
                         <a href="profile.php?id=<?php echo $post['uID']?>"><h5 class="card-title"><?php echo $post['uName']?></h5></a>
+                        <p class="card-text"><?php echo $post['mediaPath']?></p> 
                         <p class="card-text"><?php echo $post['txt']?></p>
                         <p class="card-text"><b>Likes:</b>  <?php echo $post['likeCt']?></p>
-                        <p class="card-text"><b>Comments:</b></p>
+                        <div class="container p-3 my-3 bg-info text-white rounded">
+                        <p class="card-text text-dark"><b>Comments:</b></p>
                         <?php
                         $comments = $crud->getCommentsforPost($post['pID']);
                         foreach( $comments as $comment ) {?>
                         <p class="card-text"><b> <?php echo $comment['uName']?> </b>: <?php echo $comment['content']?> - <?php echo $comment['timeSt']?> </p>
                         <?php }?>
+                        </div>
                         <p class="card-text"><?php echo $post['timeSt']?></p>
-                        <p class="card-text"><?php echo $post['mediaPath']?></p> 
+                        
                         <?php if(!$checkLike): ?>
                             <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID']?>&action=feed" method="post" class="form-control mb-2">
                                 <input type="text" name="content" class="form-control mb-2">
