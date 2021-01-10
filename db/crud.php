@@ -191,10 +191,17 @@ class crud
     public function getPostsForSearch($search)
     {
         try {
-            $sql = "SELECT DISTINCT p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt FROM Posts p, Users u, Locations t 
+            $sql = "SELECT DISTINCT p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt 
+            FROM Posts p, Users u, Locations t 
+            WHERE p.isHidden = 0 and p.uID = u.uID and u.uName LIKE '%$search%' or u.name LIKE '%$search%' or u.surname LIKE '%$search%' or (concat(u.name,' ',u.surname )LIKE  '%$search%') and t.locID = p.locID 
+            UNION 
+            SELECT DISTINCT p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt 
+            FROM Posts p, Users u, Locations t 
             WHERE p.isHidden = 0 and p.uID = u.uID and p.txt LIKE '%$search%' and t.locID = p.locID 
             UNION 
-            SELECT DISTINCT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt from Locations t, Users u, Posts p where t.locName LIKE '%$search%' and t.locID = p.locID and p.uID = u.uID 
+            SELECT DISTINCT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt 
+            from Locations t, Users u, Posts p 
+            where t.locName LIKE '%$search%' and t.locID = p.locID and p.uID = u.uID and p.isHidden = 0 
             UNION 
             SELECT DISTINCT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, f.locName, p.txt 
             from Tags t, Users u, PostsHasTags ph, Posts p, Locations f 
@@ -828,4 +835,67 @@ class crud
             return false;
         }
     }
+
+
+    public function insertPost($userID, $media, $text, $locationID){
+        try{
+            $sql = "INSERT INTO Posts (uID, mediaPath, txt, locID) VALUES(:userID, :media, :text,  :locationID); ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->bindparam(':media', $media);
+            $stmt->bindparam(':text', $text);
+            $stmt->bindparam(':locationID', $locationID);
+            $stmt->execute();
+            
+            #echo "New post created successfully";
+            return true;
+       }catch (PDOException $e) {
+            #echo $e->getMessage();
+            return false;
+        }
+    }
+    public function getLocationID($locationName){
+        try{
+            $sql = "SELECT * FROM Locations WHERE locName = :locationName";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':locationName', $locationName);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            return $result;
+        }catch (PDOException $e) {
+            #echo $e->getMessage();
+            return false;
+        }
+    }
+    public function insertLocation($locationName){
+        try{
+            $sql = "INSERT INTO Locations (locName) VALUES(:locationName); ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':locationName', $locationName);
+            $stmt->execute();
+            #echo "New location added successfully";
+            $result = $crud->getLocationID($locationName);
+            return $result;
+        }catch (PDOException $e) {
+            #echo $e->getMessage();
+            return false;
+        }
+    }
+    public function getLastPostID($userID){
+        try{
+            $sql = "SELECT pID FROM Posts WHERE uID = :userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            return $result;
+        }catch (PDOException $e) {
+            #echo $e->getMessage();
+            return false;
+        }
+    }
+
+  
+
+
 }
