@@ -9,6 +9,8 @@ $sessionID = $_SESSION['uID'];
 $userID = $sessionID;
 $search = $_POST['search'];
 $type = $_POST['type'];
+
+$_SESSION['search'] = $search;
 #echo "User ID: ".$userID;
 #echo " Session ID: ".$_SESSION['uID'];
 #$posts = $crud->getPostsForSeach($search);
@@ -26,39 +28,39 @@ $type = $_POST['type'];
                 <?php
                 $results = $crud->getUsersBySearch($search);
                 foreach ($results as $row) { ?>
-                    <?php $userName = $row['uName'];?> 
-                    <?php $userFirstName = $row['name'];?> 
-                    <?php $userLastName = $row['surname'];?> 
-                    <?php $userBio = $row['bioContent'];?> 
-                    <?php $userID = $row['uID'];?> 
-                    <?php $userFollowingCount = $row['followCt'];?> 
-                    <?php $userFollowerCount = $row['followerCt'];?> 
+                    <?php $userName = $row['uName']; ?>
+                    <?php $userFirstName = $row['name']; ?>
+                    <?php $userLastName = $row['surname']; ?>
+                    <?php $userBio = $row['bioContent']; ?>
+                    <?php $userID = $row['uID']; ?>
+                    <?php $userFollowingCount = $row['followCt']; ?>
+                    <?php $userFollowerCount = $row['followerCt']; ?>
                     <?php $isFollowing = $crud->isFollowing($userID, $sessionID); ?>
-                    <?php $pp = $row['pp'];?> 
+                    <?php $pp = $row['pp']; ?>
 
                     <div class="col-md-8 bg-light rounded">
-                    <div class="p-2"><img src=<?php echo $pp ?>  alt="user" width="50" class="rounded-circle"></div>
+                        <div class="p-2"><img src=<?php echo $pp ?> alt="user" width="50" class="rounded-circle"></div>
                         <img class="card-body">
-                            <p class="card-text"><b>Username: </b><?php echo $userName ?></p>
-                            <p class="card-text"><b>Name Surname: </b><?php echo $userFirstName . " " . $userLastName ?></p>
-                            <p class="card-text"><b>Bio: </b><?php echo $userBio ?></p>
-                            <a href="profile.php?id=<?php echo $userID ?>" class="btn btn-primary">View</a>
-                            <a class="btn btn-success" href="showFollow.php?id=<?php echo $userID ?>&action=following"><b>Following: </b><?php echo $userFollowingCount ?> </a>
-                            <a class="btn btn-warning" href="showFollow.php?id=<?php echo $userID ?>&action=follower"><b>Follower: </b><?php echo $userFollowerCount ?></a>
-                            <a class="btn btn-info" href="showFollow.php?id=<?php echo $userID ?>&action=showlocs"><b>Locations</b></a>
-                            <a class="btn btn-info" href="showTags.php?id=<?php echo $userID ?>&action=tags"><b>Tags</b></a>
-                            <!-- <p class="card-text"><b>Following: </b><?php echo $userFollowingCount ?>  -  <b>Follower: </b><?php echo $userFollowerCount ?></p>-->
-                            
-                            
-                            
-                            <?php if ($isFollowing) : ?>
-                                <!--<button type="submit" class="btn btn-secondary" href="newpost.php">Unfollow</button>-->
-                                <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollow" role="button">Unfollow</a>
-                                <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&action=follow" role="button">Report</a>
-                            <?php else : ?>
-                                <a class="btn btn-primary" href="following.php?id=<?php echo $userID ?>&action=follow" role="button">Follow</a>
-                                <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&action=follow" role="button">Report</a>
-                            <?php endif; ?>
+                        <p class="card-text"><b>Username: </b><?php echo $userName ?></p>
+                        <p class="card-text"><b>Name Surname: </b><?php echo $userFirstName . " " . $userLastName ?></p>
+                        <p class="card-text"><b>Bio: </b><?php echo $userBio ?></p>
+                        <a href="profile.php?id=<?php echo $userID ?>" class="btn btn-primary">View</a>
+                        <a class="btn btn-success" href="showFollow.php?id=<?php echo $userID ?>&action=following"><b>Following: </b><?php echo $userFollowingCount ?> </a>
+                        <a class="btn btn-warning" href="showFollow.php?id=<?php echo $userID ?>&action=follower"><b>Follower: </b><?php echo $userFollowerCount ?></a>
+                        <a class="btn btn-info" href="showFollow.php?id=<?php echo $userID ?>&action=showlocs"><b>Locations</b></a>
+                        <a class="btn btn-info" href="showTags.php?id=<?php echo $userID ?>&action=tags"><b>Tags</b></a>
+                        <!-- <p class="card-text"><b>Following: </b><?php echo $userFollowingCount ?>  -  <b>Follower: </b><?php echo $userFollowerCount ?></p>-->
+
+
+
+                        <?php if ($isFollowing) : ?>
+                            <!--<button type="submit" class="btn btn-secondary" href="newpost.php">Unfollow</button>-->
+                            <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollow" role="button">Unfollow</a>
+                            <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&action=follow" role="button">Report</a>
+                        <?php else : ?>
+                            <a class="btn btn-primary" href="following.php?id=<?php echo $userID ?>&action=follow" role="button">Follow</a>
+                            <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&action=follow" role="button">Report</a>
+                        <?php endif; ?>
                         </img>
                     </div>
                     <br><br>
@@ -126,6 +128,81 @@ $type = $_POST['type'];
                     </div>
                 <?php endif; ?>
             <?php } ?>
+        </div>
+    </div>
+    <!--container div  -->
+<?php } ?>
+
+<?php if ($type == '3') { ?>
+    <div class="container mb-4">
+        <div class="row mx-auto">
+            <div class="row-12">
+                <p class="lead">Search Result For: <?php echo $search; ?></p>
+
+
+                <?php
+                $results = $crud->getLocsBySearch($search);
+                foreach ($results as $row) {
+                    $locName = $row['locName'];
+                    $locID = $row['locID'];
+                    $postCount = $row['postCount'];
+                    $isFollowing = $crud->isUserFollowLoc($userID, $locID); ?>
+
+
+                    <div class="card text-center col-md-8 bg-light rounded mx-auto">
+                        <p class="card-text h-3 dark-text"><b>Location: </b><?php echo $locName ?></p>
+                        <p class="card-text"><b>Post Count: </b><?php echo $postCount  ?></p>
+                        <a href="location.php?id=<?php echo $userID ?>&locID=<?php echo $locID ?>" class="btn btn-info">View</a>
+                        <?php if ($isFollowing) : ?>
+                            <!--<button type="submit" class="btn btn-secondary" href="newpost.php">Unfollow</button>-->
+                            <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollowLoc&from=feed" role="button">Unfollow</a>
+                        <?php else : ?>
+                            <a class="btn btn-warning" href="following.php?id=<?php echo $userID ?>&action=followLoc&from=feed" role="button">Follow</a>
+                        <?php endif; ?>
+                    </div>
+                    <br><br>
+                <?php } ?>
+
+            </div>
+
+        </div>
+    </div>
+    <!--container div  -->
+<?php } ?>
+
+<?php if ($type == '4') { ?>
+    <div class="container mb-4">
+        <div class="row">
+            <div class="col-12">
+                <p class="lead">Search Result For: <?php echo $search; ?></p>
+
+
+                <?php
+                $results = $crud->getTagsBySearch($search);
+                foreach ($results as $row) {
+                    $tagName = $row['tagName'];
+                    $tagID = $row['tagID'];
+                    $postCount = $row['postCount'];
+                    $isFollowing = $crud->isUserFollowTag($userID, $tagID);
+                ?>
+
+                    <div class="card text-center col-md-8 bg-light rounded mx-auto">
+                        <p class="card-text h-3 dark-text"><b>Tag: </b><?php echo $tagName ?></p>
+                        <p class="card-text"><b>Post Count: </b><?php echo $postCount  ?></p>
+                        <a href="tag.php?id=<?php echo $userID ?>&tagID=<?php echo $tagID ?>" class="btn btn-info">View</a>
+                        <?php if ($isFollowing) : ?>
+                            <!--<button type="submit" class="btn btn-secondary" href="newpost.php">Unfollow</button>-->
+                            <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollowTag&from=feed" role="button">Unfollow</a>
+                        <?php else : ?>
+                            <a class="btn btn-warning" href="following.php?id=<?php echo $userID ?>&action=followTag&from=feed" role="button">Follow</a>
+                        <?php endif; ?>
+                    </div>
+                    <br><br>
+
+                <?php } ?>
+
+            </div>
+
         </div>
     </div>
     <!--container div  -->

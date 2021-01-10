@@ -98,6 +98,8 @@ if (isset($_SESSION['uID'])) {
               <select class="mdb-select md-form colorful-select dropdown-primary" searchable="Search here.." name="type">
                 <option value="1">User</option>
                 <option value="2">Post</option>
+                <option value="3">Locations</option>
+                <option value="4">Tags</option>
               </select>
               <input class="form-control" type="search" name="search" placeholder="Search" aria-label="Search">
               <button class="btn btn-outline-success" type="submit">Search </button>

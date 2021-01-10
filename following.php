@@ -8,6 +8,7 @@ $ID = $_GET['id'];
 $sessionID = $_SESSION['uID'];
 
 $action = $_GET['action'];
+$from = $_GET['from'];
 
 if($action == "follow")
 {
@@ -18,23 +19,69 @@ if($action == "follow")
 else if($action == "unfollow")
 {
     $crud->unfollowUser($ID, $sessionID);
-    header("Location: profile.php?id=$ID");
-}
-else if($action == "unfollow2")
+    if($from == 'feed')
+    {
+        header("Location: showFollow.php?id=$sessionID&action=following");
+
+    }
+    else if($from = 'profile')
+    {
+        header("Location: profile.php?id=$ID");
+    }
+}   
+else if($action == "followLoc")
 {
-    $crud->unfollowUser($ID, $sessionID);
-    header("Location: showFollow.php?id=$sessionID&action=following");
+    $crud->followLoc($ID, $sessionID);
+    #echo '<div class="alert alert-danger">Checkpoint 1 </div>';
+    if($from == 'feed')
+    {
+        header("Location: location.php?id=$sessionID&tagID=$ID");
+    }
+    else if($from = 'profile')
+    {
+        header("Location: showFollow.php?id=$sessionID&action=showlocs");
+    }
 }
-else if($action == "loc")
+else if($action == "unfollowLoc")
 {
     $crud->unfollowLoc($ID, $sessionID);
     #echo '<div class="alert alert-danger">Checkpoint 1 </div>';
-    header("Location: showFollow.php?id=$sessionID&action=showlocs");
+    
+    if($from == 'feed')
+    {
+        header("Location: location.php?id=$sessionID&tagID=$ID");
+    }
+    else if($from = 'profile')
+    {
+        header("Location: showFollow.php?id=$sessionID&action=showlocs");
+    }
 }
-else if($action == "tags")
+else if($action == "followTag")
+{
+    $crud->followTag($ID, $sessionID);
+    #echo '<div class="alert alert-danger">Checkpoint 1 </div>';
+    if($from == 'feed')
+    {
+        header("Location: tag.php?id=$sessionID&tagID=$ID");
+    }
+    else if($from = 'profile')
+    {
+        header("Location: showFollow.php?id=$sessionID&action=tags");
+    }
+}
+else if($action == "unfollowTag")
 {
     $crud->unfollowTag($ID, $sessionID);
     #echo '<div class="alert alert-danger">Checkpoint 1 </div>';
-    header("Location: showFollow.php?id=$sessionID&action=tags");
+    if($from == 'feed')
+    {
+        header("Location: tag.php?id=$sessionID&tagID=$ID");
+    }
+    else if($from = 'profile')
+    {
+        header("Location: showFollow.php?id=$sessionID&action=tags");
+    }
 }
+
+
 ?>
