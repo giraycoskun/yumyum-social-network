@@ -824,6 +824,64 @@ class crud
     }
 
 
+    public function insertPost($userID, $media, $text, $locationID){
+        try{
+            $sql = "INSERT INTO Posts (uID, mediaPath, txt, locID) VALUES(:userID, :media, :text,  :locationID); ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->bindparam(':media', $media);
+            $stmt->bindparam(':text', $text);
+            $stmt->bindparam(':locationID', $locationID);
+            $stmt->execute();
+            
+            #echo "New post created successfully";
+            return true;
+       }catch (PDOException $e) {
+            #echo $e->getMessage();
+            return false;
+        }
+    }
+    public function getLocationID($locationName){
+        try{
+            $sql = "SELECT * FROM Locations WHERE locName = :locationName";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':locationName', $locationName);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            return $result;
+        }catch (PDOException $e) {
+            #echo $e->getMessage();
+            return false;
+        }
+    }
+    public function insertLocation($locationName){
+        try{
+            $sql = "INSERT INTO Locations (locName) VALUES(:locationName); ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':locationName', $locationName);
+            $stmt->execute();
+            #echo "New location added successfully";
+            $result = $crud->getLocationID($locationName);
+            return $result;
+        }catch (PDOException $e) {
+            #echo $e->getMessage();
+            return false;
+        }
+    }
+    public function getLastPostID($userID){
+        try{
+            $sql = "SELECT pID FROM Posts WHERE uID = :userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            return $result;
+        }catch (PDOException $e) {
+            #echo $e->getMessage();
+            return false;
+        }
+    }
+
   
 
 
