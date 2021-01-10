@@ -7,29 +7,33 @@ require_once 'db/conn.php'
 ?>
 
 
-<h2>Welcome to ChatBox</h2>
+
+
+<div class="container">
+    <button type="submit" class="btn btn-primary" style="float: right" id="send">Send Message</button>
+
+   
+  
+     <table class="table">
+
+            <tr>
+                <th>Name Surname</th>
+                <th>Message</th>
+            </tr>
+            <?php 
+            $result = $crud->getMessages($_SESSION["uID"]);
+            while($r = $result->fetch(PDO::FETCH_ASSOC)) { ?>
+            <tr>
+                    <td><?php echo $r['name']." ".$r['surname']  ?></td>   
+                    <td><?php echo $r['content'] ?></td>     
+            </tr> 
+            <?php }?>
+        </table>
+     </div>
 
 
 
 
-<table class="table">
-        <tr>
-            <th>Name Surname</th>
-            <th>Message</th>
-        </tr>
-        <?php 
-        $result = $crud->getMessages($_SESSION["uID"]);
-        while($r = $result->fetch(PDO::FETCH_ASSOC)) { ?>
-           <tr>
-                <td><?php echo $r['name']." ".$r['surname']  ?></td>   
-                <td><?php echo $r['content'] ?></td>     
-           </tr> 
-        <?php }?>
-    </table>
-
-<br>
-<br>
-<br>
 
 
 
