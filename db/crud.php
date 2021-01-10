@@ -178,10 +178,17 @@ class crud
     public function getPostsForSearch($search)
     {
         try {
-            $sql = "SELECT DISTINCT p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt FROM Posts p, Users u, Locations t 
+            $sql = "SELECT DISTINCT p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt 
+            FROM Posts p, Users u, Locations t 
+            WHERE p.isHidden = 0 and p.uID = u.uID and u.uName LIKE '%$search%' or u.name LIKE '%$search%' or u.surname LIKE '%$search%' or (concat(u.name,' ',u.surname )LIKE  '%$search%') and t.locID = p.locID 
+            UNION 
+            SELECT DISTINCT p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt 
+            FROM Posts p, Users u, Locations t 
             WHERE p.isHidden = 0 and p.uID = u.uID and p.txt LIKE '%$search%' and t.locID = p.locID 
             UNION 
-            SELECT DISTINCT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt from Locations t, Users u, Posts p where t.locName LIKE '%$search%' and t.locID = p.locID and p.uID = u.uID 
+            SELECT DISTINCT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt 
+            from Locations t, Users u, Posts p 
+            where t.locName LIKE '%$search%' and t.locID = p.locID and p.uID = u.uID and p.isHidden = 0 
             UNION 
             SELECT DISTINCT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, f.locName, p.txt 
             from Tags t, Users u, PostsHasTags ph, Posts p, Locations f 
