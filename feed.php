@@ -10,6 +10,11 @@ if ($userID != $_SESSION['uID']) {
     header("Location: logout.php");
 }
 $sessionID = $_SESSION['uID'];
+if (isset($_GET['page'])) {
+    $page = $_GET['page'];
+} else {
+    $page = 1;
+}
 #echo "User ID: ".$userID;
 #echo " Session ID: ".$_SESSION['uID'];
 
@@ -23,18 +28,28 @@ $sessionID = $_SESSION['uID'];
         <?php
         $userID = $_GET['id'];
         $posts = $crud->getPostsForFeed($userID);
-        foreach ($posts as $post) { ?>
+        $startIndex = ($page - 1) * 6;
+        $countP = 6;
+        for (; $startIndex < count($posts); $startIndex++) {
+            $post = $posts[$startIndex];
+            if ($countP == 0) {
+                break;
+            }
+            $countP = $countP - 1; ?>
             <?php if ($post['isHidden'] == 0) : ?>
                 <?php $checkLike = $crud->isPostLikedByUser($sessionID, $post['pID']); ?>
                 <div class="col align-items-stretch rounded">
                     <div class="card h-100">
-                        <a href="post.php?id=<?php echo $post['pID'] ?>">
-                            <img src="files/posts/images.jpeg" class="card-img-top" alt="...">
-                        </a>
-                        <div class="card-body">
+                        <div class="card-header">
                             <a class="text-dark" href="profile.php?id=<?php echo $post['uID'] ?>">
                                 <h5 class="card-title"><?php echo $post['uName'] ?></h5>
                             </a>
+                        </div>
+                        <div class="card-body">
+                            <a href="post.php?id=<?php echo $post['pID'] ?>">
+                                <img src="files/posts/images.jpeg" class="card-img-top" alt="...">
+                            </a>
+
                             <p class="card-text"><?php echo $post['mediaPath'] ?></p>
                             <p class="card-text"><?php echo $post['txt'] ?></p>
                             <?php $comments = $crud->getCommentsforPost($post['pID']); ?>
@@ -91,6 +106,24 @@ $sessionID = $_SESSION['uID'];
             <?php endif; ?>
         <?php } ?>
     </div>
+    <nav aria-label="...">
+        <ul class="pagination pagination-lg justify-content-center">
+            <?php
+            $countP = 6;
+            $postCount = count($posts);
+            $pageCount = ceil((float)$postCount / $countP);
+            for ($i = 0; $i < $pageCount; $i++) {
+            ?>
+                <?php if ($page == $i + 1) : ?>
+                    <li class="page-item active" aria-current="page">
+                        <span class="page-link"><?php echo ($i + 1) ?></span>
+                    </li>
+                <?php else : ?>
+                    <li class="page-item"><a class="page-link" href="feed.php?id=<?php echo $userID?>&page=<?php echo ($i + 1)?>"><?php echo ($i + 1) ?></a></li>
+                <?php endif; ?>
+            <?php } ?>
+        </ul>
+    </nav>
 </div>
 <!--container div  -->
 

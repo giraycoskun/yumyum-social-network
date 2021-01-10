@@ -5,7 +5,12 @@
 
         <?php
         $posts = $crud->getPostsForTag($tagID);
-        foreach ($posts as $post) { ?>
+        $countP = 8;
+        foreach ($posts as $post) {
+            if ($countP == 0) {
+                break;
+            }
+            $countP = $countP - 1; ?>
             <?php if ($post['isHidden'] == 0) : ?>
                 <?php $checkLike = $crud->isPostLikedByUser($sessionID, $post['pID']); ?>
                 <div class="col align-items-stretch rounded">

@@ -65,13 +65,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
       <input type="email" id="inputEmail" class="form-control" placeholder="Email address" name="inputEmail" autofocus>
       <label for="inputPassword" class="sr-only">Password</label>
       <input type="password" id="inputPassword" class="form-control" name="inputPassword" placeholder="Password" >
-      <div class="checkbox mb-3">
-        <label>
-          <input type="checkbox" value="remember-me"> Remember me
-        </label>
-      </div>
-      <button class="btn btn-lg btn-primary btn-block" name="login" type="submit">Sign in</button>
-      <button class="btn btn-lg btn-secondary btn-block" name="register" type="submit">Register</button>
+      <button class="btn btn-lg btn-primary btn-block mt-2" name="login" type="submit">Sign in</button>
+      <button class="btn btn-lg btn-secondary btn-block mt-2" name="register" type="submit">Register</button>
      
 </form>
 </div>
