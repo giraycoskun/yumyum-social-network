@@ -56,6 +56,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
 
             $_SESSION['mail'] = $result['mail'];
             $_SESSION['uID'] = $result['uID'];
+            $_SESSION['username'] = $result['uName'];
             $userID = $_SESSION['uID'];
             $_SESSION['isAdmin'] = $result['isAdmin'];
             if($result['isAdmin']== false)

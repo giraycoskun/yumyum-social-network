@@ -163,9 +163,21 @@ class crud
     public function getPostsForFeed($userID)
     {
         try {
-            $sql = "SELECT * FROM Posts, UserFollowsUser, Users WHERE Posts.uID = Users.uID and UserFollowsUser.FolloweeID = Posts.uID and UserFollowsUser.FollowerID=:userID ORDER BY Posts.timeSt LIMIT 0,20";
+            $sql = "SELECT * 
+            FROM
+            (SELECT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt FROM Posts p, Users u, Locations t 
+            WHERE p.isHidden = 0 and p.uID = u.uID and t.locID = p.locID and u.uID = $userID
+            UNION 
+            SELECT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt FROM Posts p, Users u, Locations t, UserFollowsUser uf
+            WHERE p.isHidden = 0 and p.uID = u.uID and t.locID = p.locID and u.uID = uf.FolloweeID and uf.FollowerID = $userID
+            UNION
+            SELECT   p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt FROM Users u, Posts p, Locations t,  UserFollowsLocations ul 
+            WHERE p.isHidden = 0 and t.locID = p.locID and ul.locID = p.locID and u.uID = ul.uID and ul.uID = $userID
+            UNION 
+            SELECT   p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt FROM Users u, Posts p, Locations t, UserFollowsTags ut, PostsHasTags pt
+            WHERE p.isHidden = 0 and t.locID = p.locID and p.pID = pt.pID and ut.tID = pt.tID and u.uID = ut.uID and ut.uID = $userID) AS T
+            ORDER BY T.timeSt DESC;";
             $stmt = $this->db->prepare($sql);
-            $stmt->bindparam(':userID', $userID);
             $stmt->execute();
             $result = $stmt->fetchAll();
             return $result;
