@@ -18,11 +18,11 @@ if($action == "follow")
         header("Location: showFollow.php?id=$sessionID&action=following");
 
     }
-    else if($from = 'profile')
+    else if($from == 'profile')
     {
         header("Location: profile.php?id=$ID");
     }
-    else if ($from = 'search')
+    else if ($from == 'search')
     {
         header("Location: search.php");
     }
@@ -36,11 +36,11 @@ else if($action == "unfollow")
         header("Location: showFollow.php?id=$sessionID&action=following");
 
     }
-    else if($from = 'profile')
+    else if($from == 'profile')
     {
         header("Location: profile.php?id=$ID");
     }
-    else if ($from = 'search')
+    else if ($from == 'search')
     {
         header("Location: search.php");
     }
@@ -53,11 +53,11 @@ else if($action == "followLoc")
     {
         header("Location: location.php?id=$sessionID&tagID=$ID");
     }
-    else if($from = 'profile')
+    else if($from == 'profile')
     {
         header("Location: showFollow.php?id=$sessionID&action=showlocs");
     }
-    else if ($from = 'search')
+    else if ($from == 'search')
     {
         header("Location: search.php");
     }
@@ -71,11 +71,11 @@ else if($action == "unfollowLoc")
     {
         header("Location: location.php?id=$sessionID&tagID=$ID");
     }
-    else if($from = 'profile')
+    else if($from == 'profile')
     {
         header("Location: showFollow.php?id=$sessionID&action=showlocs");
     }
-    else if ($from = 'search')
+    else if ($from == 'search')
     {
         header("Location: search.php");
     }
@@ -88,11 +88,11 @@ else if($action == "followTag")
     {
         header("Location: tag.php?id=$sessionID&tagID=$ID");
     }
-    else if($from = 'profile')
+    else if($from == 'profile')
     {
         header("Location: showFollow.php?id=$sessionID&action=tags");
     }
-    else if ($from = 'search')
+    else if ($from == 'search')
     {
         header("Location: search.php");
     }
@@ -105,11 +105,11 @@ else if($action == "unfollowTag")
     {
         header("Location: tag.php?id=$sessionID&tagID=$ID");
     }
-    else if($from = 'profile')
+    else if($from == 'profile')
     {
         header("Location: showFollow.php?id=$sessionID&action=tags");
     }
-    else if ($from = 'search')
+    else if ($from == 'search')
     {
         header("Location: search.php");
     }

@@ -25,7 +25,7 @@ elseif($action == "post")
 {
     header("Location: post.php?id=$postID");
 }
-elseif($action== 'search')
+elseif($action == 'search')
 {
     header("Location: search.php");
 }

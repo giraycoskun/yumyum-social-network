@@ -239,9 +239,9 @@ if (isset($_GET['page'])) {
                         <a href="location.php?id=<?php echo $userID ?>&locID=<?php echo $locID ?>" class="btn btn-info">View</a>
                         <?php if ($isFollowing) : ?>
                             <!--<button type="submit" class="btn btn-secondary" href="newpost.php">Unfollow</button>-->
-                            <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollowLoc&from=search" role="button">Unfollow</a>
+                            <a class="btn btn-secondary" href="following.php?id=<?php echo $locID ?>&action=unfollowLoc&from=search" role="button">Unfollow</a>
                         <?php else : ?>
-                            <a class="btn btn-warning" href="following.php?id=<?php echo $userID ?>&action=followLoc&from=search" role="button">Follow</a>
+                            <a class="btn btn-warning" href="following.php?id=<?php echo $locID ?>&action=followLoc&from=search" role="button">Follow</a>
                         <?php endif; ?>
                     </div>
                     <br><br>
@@ -276,9 +276,9 @@ if (isset($_GET['page'])) {
                         <a href="tag.php?id=<?php echo $userID ?>&tagID=<?php echo $tagID ?>" class="btn btn-info">View</a>
                         <?php if ($isFollowing) : ?>
                             <!--<button type="submit" class="btn btn-secondary" href="newpost.php">Unfollow</button>-->
-                            <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollowTag&from=search" role="button">Unfollow</a>
+                            <a class="btn btn-secondary" href="following.php?id=<?php echo $tagID ?>&action=unfollowTag&from=search" role="button">Unfollow</a>
                         <?php else : ?>
-                            <a class="btn btn-warning" href="following.php?id=<?php echo $userID ?>&action=followTag&from=search" role="button">Follow</a>
+                            <a class="btn btn-warning" href="following.php?id=<?php echo $tagID ?>&action=followTag&from=search" role="button">Follow</a>
                         <?php endif; ?>
                     </div>
                     <br><br>
