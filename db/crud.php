@@ -162,23 +162,10 @@ class crud
 
     public function getPostsForFeed($userID)
     {
-        #TODO
         try {
-            $sql = "SELECT * 
-            FROM
-            (SELECT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt FROM Posts p, Users u, Locations t 
-            WHERE p.isHidden = 0 and p.uID = u.uID and t.locID = p.locID and u.uID = $userID
-            UNION 
-            SELECT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt FROM Posts p, Users u, Locations t, UserFollowsUser uf
-            WHERE p.isHidden = 0 and p.uID = u.uID and t.locID = p.locID and u.uID = uf.FolloweeID and uf.FollowerID = $userID
-            UNION
-            SELECT   p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt FROM Users u, Posts p, Locations t,  UserFollowsLocations ul 
-            WHERE p.isHidden = 0 and t.locID = p.locID and ul.locID = p.locID and u.uID = ul.uID and ul.uID = $userID
-            UNION 
-            SELECT   p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt FROM Users u, Posts p, Locations t, UserFollowsTags ut, PostsHasTags pt
-            WHERE p.isHidden = 0 and t.locID = p.locID and p.pID = pt.pID and ut.tID = pt.tID and u.uID = ut.uID and ut.uID = $userID) AS T
-            ORDER BY T.timeSt DESC;";
+            $sql = "SELECT * FROM Posts, UserFollowsUser, Users WHERE Posts.uID = Users.uID and UserFollowsUser.FolloweeID = Posts.uID and UserFollowsUser.FollowerID=:userID ORDER BY Posts.timeSt LIMIT 0,20";
             $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
             $stmt->execute();
             $result = $stmt->fetchAll();
             return $result;
@@ -839,18 +826,18 @@ class crud
 
     public function insertPost($userID, $media, $text, $locationID){
         try{
-            $sql = "INSERT INTO Posts (uID, mediaPath, txt, locID) VALUES(:userID, :media, :text,  :locationID); ";
+            $sql = "INSERT INTO Posts (uID, mediaPath, txt, locID) VALUES(:userID, :media, :text,  :locationID)";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':userID', $userID);
             $stmt->bindparam(':media', $media);
             $stmt->bindparam(':text', $text);
             $stmt->bindparam(':locationID', $locationID);
             $stmt->execute();
-            
+            $result = $this->getLastPostID($userID);
             #echo "New post created successfully";
-            return true;
+            return $result;
        }catch (PDOException $e) {
-            #echo $e->getMessage();
+            echo "1".$e->getMessage();
             return false;
         }
     }
@@ -874,7 +861,7 @@ class crud
             $stmt->bindparam(':locationName', $locationName);
             $stmt->execute();
             #echo "New location added successfully";
-            $result = $crud->getLocationID($locationName);
+            $result = $this->getLocationID($locationName);
             return $result;
         }catch (PDOException $e) {
             #echo $e->getMessage();
@@ -883,9 +870,36 @@ class crud
     }
     public function getLastPostID($userID){
         try{
-            $sql = "SELECT pID FROM Posts WHERE uID = :userID";
+            $sql = "SELECT * FROM Posts WHERE Posts.uID = :userID and Posts.pID = (SELECT MAX(Posts.pID) FROM Posts)";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            return $result['pID'];
+        }catch (PDOException $e) {
+            echo "2".$e->getMessage();
+            return false;
+        }
+    }
+
+    public function updatePost($postID,$media){
+        try {
+            $sql = "UPDATE Posts SET mediapath=:media WHERE Posts.pID=:postID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':postID', $postID);
+            $stmt->bindparam(':media', $media);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+    public function getTagID($tag){
+        try{
+            $sql = "SELECT * FROM Tags WHERE Tags.tagName=:tag";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':tag', $tag);
             $stmt->execute();
             $result = $stmt->fetch();
             return $result;
@@ -894,7 +908,34 @@ class crud
             return false;
         }
     }
-
+    public function insertTag($tag){
+        try{
+            $sql = "INSERT INTO Tags (tagName) VALUES(:tag); ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':tag', $tag);
+            $stmt->execute();
+            #echo "New tag added successfully";
+            $result = $this->getTagID($tag);
+            return $result;
+        }catch (PDOException $e) {
+            #echo $e->getMessage();
+            return false;
+        }
+    }
+    public function insertPostsHasTags($postID, $tagID){
+        try{
+            $sql = "INSERT INTO PostsHasTags (pId, tID) VALUES(:postID, :tagID); ";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':postID', $postID);
+            $stmt->bindparam(':tagID', $tagID);
+            $stmt->execute();
+            #echo "New post created successfully";
+            return true;
+       }catch (PDOException $e) {
+            #echo $e->getMessage();
+            return false;
+        }
+    }
   
 
 

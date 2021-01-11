@@ -10,41 +10,63 @@ $userID = $_SESSION['uID'];
 if ($_SERVER['REQUEST_METHOD'] == 'POST'){
     if (isset($_POST['share'])) 
     {
-        $check = 0;
-        $text = $_POST['text'];
-        
-        if(strlen($locationName)>0) {
-            $locationName = ucwords((strtolower(trim($_POST['locationName'])))); #ucwords makes first char upper
-            $locResult = $crud->getLocationID($locationName);
-            if (!$locResult) {
-                $newLocResult = $crud->insertLocation($locationName);
-                $locationID = $newLocResult['locID'];
-            }
-            else {
-                $locationID = $locResult['locID'];
-            }
-        }
-
-        $media = 'empty';
-        $crud->insertPost($userID, $media, $text, $locationID);
-
         $orig_file = $_FILES["media"]["tmp_name"];
         if(!is_uploaded_file($orig_file))
         {
             echo '<div class="alert alert-danger">You must upload a media file</div>';
         }
-        else
-        {
-            $ext = pathinfo($_FILES["media"]["tmp_name"], PATHINFO_EXTENSION);
-            $target_dir = 'files/users/';
-            $media = "$target_dir$postId.$ext";
+        else {
+            $text = $_POST['text'];
+            $media = 'empty';
+            
+            $locationName = ucwords((strtolower(trim($_POST['locationName'])))); #ucwords makes first char upper
+            if(strlen($locationName)>0) {
+                $locResult = $crud->getLocationID($locationName);
+                if (!$locResult) {
+                    $newLocResult = $crud->insertLocation($locationName);
+                    $locationID = $newLocResult['locID'];
+                }
+                else {
+                    $locationID = $locResult['locID'];
+                }
+            }
+
+            $postID = $crud->insertPost($userID, $media, $text, $locationID);
+
+            $tagText = "";
+            if(strlen($text)>0) {
+                $ary = explode(" ",$text);
+                foreach($ary as $word) {
+                    if ($word[0] == '#') {
+                        $tagText .= $word;
+                    }
+                }
+                if (strlen($tagText)>0) {
+                    $tagArr = explode("#",$tagText);
+                    foreach($tagArr as $tag) {
+                        $tagResult = $crud->getTagID($tag);
+                        if (!$tagResult) {
+                            $newTagResult = $crud->insertTag($tag);
+                            $tagID = $newTagResult['tagID'];
+                            $crud->insertPostsHasTags($postID, $tagID);
+                        }
+                        else {
+                            $tagID = $tagResult['tagID'];
+                            $crud->insertPostsHasTags($postID, $tagID);
+                        }
+                    }
+                }
+            }
+
+            $ext = pathinfo($_FILES["media"]["name"], PATHINFO_EXTENSION);
+            $target_dir = 'files/posts/';
+            $media = "$target_dir$postID.$ext";
             move_uploaded_file($orig_file,$media);
 
-            $crud->insertPost($userID, $media, $text, $locationID);
-        }
-        
-        
+            $crud->updatePost($postID, $media);
 
+            echo '<div class="alert alert-success">You Have Successfully Shared Your Post</div>';
+        }
     }
 
 
