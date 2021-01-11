@@ -165,16 +165,16 @@ class crud
         try {
             $sql = "SELECT * 
             FROM
-            (SELECT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt FROM Posts p, Users u, Locations t 
+            (SELECT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt, u.pp FROM Posts p, Users u, Locations t 
             WHERE p.isHidden = 0 and p.uID = u.uID and t.locID = p.locID and u.uID = $userID
             UNION 
-            SELECT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt FROM Posts p, Users u, Locations t, UserFollowsUser uf
+            SELECT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt, u.pp FROM Posts p, Users u, Locations t, UserFollowsUser uf
             WHERE p.isHidden = 0 and p.uID = u.uID and t.locID = p.locID and u.uID = uf.FolloweeID and uf.FollowerID = $userID
             UNION
-            SELECT   p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt FROM Users u, Posts p, Locations t,  UserFollowsLocations ul 
+            SELECT   p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt, u.pp FROM Users u, Posts p, Locations t,  UserFollowsLocations ul 
             WHERE p.isHidden = 0 and t.locID = p.locID and ul.locID = p.locID and u.uID = ul.uID and ul.uID = $userID
             UNION 
-            SELECT   p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt FROM Users u, Posts p, Locations t, UserFollowsTags ut, PostsHasTags pt
+            SELECT   p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt, u.pp FROM Users u, Posts p, Locations t, UserFollowsTags ut, PostsHasTags pt
             WHERE p.isHidden = 0 and t.locID = p.locID and p.pID = pt.pID and ut.tID = pt.tID and u.uID = ut.uID and ut.uID = $userID) AS T
             ORDER BY T.timeSt DESC;";
             $stmt = $this->db->prepare($sql);
