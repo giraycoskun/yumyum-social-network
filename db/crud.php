@@ -135,7 +135,7 @@ class crud
     public function getPostsbyUser($uID)
     {
         try {
-            $sql = "SELECT * FROM Posts, Users WHERE Posts.uID = :uID and Users.uID=:uID";
+            $sql = "SELECT * FROM Posts, Users WHERE Posts.uID = :uID and Users.uID=:uID ORDER BY Posts.timeSt DESC";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':uID', $uID);
             $stmt->execute();

@@ -32,10 +32,10 @@ $userFollowingCount = $result['followCt'];
 
 <div class="container mt-2">
     <h1>Hello,  <?php echo $_SESSION['username'] ?></h1>
-    <div class="card mb-3" style="max-width: 660px;">
+    <div class="card mb-3" >
     <div class="row g-0">
         <div class=" col-md-4">
-            <img class="img-thumbnail img-fluid rounded mx-auto d-block" src="<?php echo $userPP?>" alt="Image Not Found">
+            <img class="img-thumbnail img-fluid rounded mx-auto d-block" style="width: 20rem; height: 15rem;" src="<?php echo $userPP?>" alt="Image Not Found">
         </div>
         <div class="col-md-8">
         <div class="card-body">
@@ -153,7 +153,7 @@ $userFollowingCount = $result['followCt'];
             <?php $checkLike = $crud->isPostLikedByUser($sessionID, $post['pID']); ?>
             <div class="col align-items-stretch">
                 <div class="card h-100">
-                    <img src="..." class="card-img-top" alt="...">
+                    <img src=<?php echo $post['mediaPath'];?> class="card-img-top" alt="...">
                     <div class="card-body d-flex flex-column">
                         <h5 class="card-title"><?php echo $post['uName']?></h5>
                         <p class="card-text"><?php echo $post['txt']?></p>
@@ -165,7 +165,6 @@ $userFollowingCount = $result['followCt'];
                         <p class="card-text"><b> <?php echo $comment['uName']?> </b>: <?php echo $comment['content']?> - <?php echo $comment['timeSt']?> </p>
                         <?php }?>
                         <p class="card-text"><?php echo $post['timeSt']?></p>
-                        <p class="card-text"><?php echo $post['mediaPath']?></p> 
                         <div>
                             <?php if ($sessionID == $userID ): ?>
                                 <a class="btn btn-danger align-item-end" href="hidePost.php?id=<?php echo $post['pID'] ?>&action=delete" role="button">Delete</a>
