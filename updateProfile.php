@@ -50,6 +50,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             $target_dir = 'files/users/';
             $destination = "$target_dir$userID.$ext";
             move_uploaded_file($orig_file,$destination);
+
+            $crud->insertPhotoToUser($userID, $destination);
             
             $result = $crud->getUser($mail, $pass);
 
