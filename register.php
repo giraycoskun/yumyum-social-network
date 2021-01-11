@@ -51,8 +51,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
             $target_dir = 'files/users/';
             $destination = "$target_dir$userID.$ext";
             move_uploaded_file($orig_file,$destination);
-            
-           
+
+            $crud->insertPhotoToUser($userID, $destination);           
 
             $_SESSION['mail'] = $result['mail'];
             $_SESSION['uID'] = $result['uID'];
@@ -132,7 +132,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         <div class="row mt-2">
             <div class="col container">
                 <button class="btn btn-lg btn-primary " name="submit" type="submit">Submit</button>
-                <button class="btn btn-lg btn-secondary " name="back" type="submit">Sign In</button>
+                <button class="btn btn-lg btn-secondary " name="back" type="submit">Back</button>
                 
             </div>
         </div>

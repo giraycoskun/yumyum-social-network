@@ -948,6 +948,20 @@ class crud
             return false;
         }
     }
+
+    public function insertPhotoToUser($userID, $destination){
+        try {
+            $sql = "UPDATE Users SET pp=:destination WHERE Users.uID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->bindparam(':destination', $destination);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
   
 
 
