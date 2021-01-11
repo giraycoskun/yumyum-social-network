@@ -60,10 +60,10 @@ $userFollowingCount = $result['followCt'];
                         <button type="button" class="btn btn-secondary" data-bs-toggle="modal" data-bs-target="#deactivateModal">Deactivate</button>
                     <?php elseif ($isFollowing) : ?>
                         <!--<button type="submit" class="btn btn-secondary" href="newpost.php">Unfollow</button>-->
-                        <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollow" role="button">Unfollow</a>
+                        <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollow&from=profile" role="button">Unfollow</a>
                         <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&action=follow" role="button">Report</a>
                     <?php else : ?>
-                        <a class="btn btn-primary" href="following.php?id=<?php echo $userID ?>&action=follow" role="button">Follow</a>
+                        <a class="btn btn-primary" href="following.php?id=<?php echo $userID ?>&action=follow&from=profile" role="button">Follow</a>
                         <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&action=follow" role="button">Report</a>
                     <?php endif; ?>
                 </div>
@@ -202,31 +202,31 @@ $userFollowingCount = $result['followCt'];
                             </div>
 
                             <?php if ($sessionID == $userID) : ?>
-                                <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=feed" method="post" class="form-control mb-2">
+                                <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=profile" method="post" class="form-control mb-2">
                                     <input type="text" name="content" class="form-control mb-2">
                                     <button type="submit" class="btn btn-primary" href="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=profile" role="button">Comment</button>
                                 </form>
                                 <?php if (!$checkLike) : ?>
-                                    <a class="btn btn-primary" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=like&feed" role="button">Like</a>
+                                    <a class="btn btn-primary" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=like&profile" role="button">Like</a>
                                 <?php elseif ($checkLike) : ?>
-                                    <a class="btn btn-warning" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=dislike&feed" role="button">Dislike</a>
+                                    <a class="btn btn-warning" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=dislike&profile" role="button">Dislike</a>
                                 <?php endif; ?>
                                 <a class="btn btn-danger align-item-end" href="hidePost.php?id=<?php echo $post['pID'] ?>&action=delete" role="button">Delete</a>
                                 <button type="button" class="btn btn-warning align-item-end" data-whatever="<?php echo $post['pID'] ?>" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
                             <?php elseif (!$checkLike) : ?>
-                                <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=feed" method="post" class="form-control mb-2">
+                                <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=profile" method="post" class="form-control mb-2">
                                     <input type="text" name="content" class="form-control mb-2">
                                     <button type="submit" class="btn btn-primary" href="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=profile" role="button">Comment</button>
                                 </form>
-                                <a class="btn btn-primary" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=like&feed" role="button">Like</a>
-                                <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button&feed">Report</a>
+                                <a class="btn btn-primary" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=like&profile" role="button">Like</a>
+                                <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button&profile">Report</a>
                             <?php elseif ($checkLike) : ?>
-                                <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=feed" method="post" class="form-control mb-2">
+                                <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=profile" method="post" class="form-control mb-2">
                                     <input type="text" name="content" class="form-control mb-2">
                                     <button type="submit" class="btn btn-primary" href="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=profile" role="button">Comment</button>
                                 </form>
-                                <a class="btn btn-warning" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=dislike&feed" role="button">Dislike</a>
-                                <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button&feed">Report</a>
+                                <a class="btn btn-warning" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=dislike&profile" role="button">Dislike</a>
+                                <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button&profile">Report</a>
                             <?php endif; ?>
 
                         </div>

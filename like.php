@@ -29,9 +29,17 @@ elseif(isset($_GET['post']))
 {
     header("Location: post.php?id=$postID");
 }
+elseif(isset($_GET['profile']))
+{
+    header("Location: profile.php&id=$userID");
+}
+elseif(isset($_GET['search']))
+{
+    header("Location: search.php");
+}
 else
 {
-    header("Location: profile.php?id=$userID");
+    header("Location: feed.php?id=$sessionID");
 }
     
 ?>

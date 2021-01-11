@@ -25,6 +25,14 @@ elseif($action == "post")
 {
     header("Location: post.php?id=$postID");
 }
+elseif($action== 'search')
+{
+    header("Location: search.php");
+}
+else
+{
+    header("Location: feed.php?id=$sessionID");
+}
 
     
 ?>

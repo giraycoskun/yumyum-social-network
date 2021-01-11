@@ -170,19 +170,19 @@ if (isset($_GET['page'])) {
 
 
                                 <?php if (!$checkLike) : ?>
-                                    <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=feed" method="post" class="form-control mb-2">
+                                    <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=search" method="post" class="form-control mb-2">
                                         <input type="text" name="content" class="form-control mb-2">
                                         <button type="submit" class="btn btn-primary" href="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=profile" role="button">Comment</button>
                                     </form>
-                                    <a class="btn btn-primary" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=like&feed" role="button">Like</a>
-                                    <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button&feed">Report</a>
+                                    <a class="btn btn-primary" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=like&search" role="button">Like</a>
+                                    <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button&search">Report</a>
                                 <?php elseif ($checkLike) : ?>
-                                    <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=feed" method="post" class="form-control mb-2">
+                                    <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=search" method="post" class="form-control mb-2">
                                         <input type="text" name="content" class="form-control mb-2">
                                         <button type="submit" class="btn btn-primary" href="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=profile" role="button">Comment</button>
                                     </form>
-                                    <a class="btn btn-warning" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=dislike&feed" role="button">Dislike</a>
-                                    <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button&feed">Report</a>
+                                    <a class="btn btn-warning" href="like.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=dislike&search" role="button">Dislike</a>
+                                    <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>" role="button&search">Report</a>
                                 <?php endif; ?>
 
                             </div>
@@ -239,9 +239,9 @@ if (isset($_GET['page'])) {
                         <a href="location.php?id=<?php echo $userID ?>&locID=<?php echo $locID ?>" class="btn btn-info">View</a>
                         <?php if ($isFollowing) : ?>
                             <!--<button type="submit" class="btn btn-secondary" href="newpost.php">Unfollow</button>-->
-                            <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollowLoc&from=feed" role="button">Unfollow</a>
+                            <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollowLoc&from=search" role="button">Unfollow</a>
                         <?php else : ?>
-                            <a class="btn btn-warning" href="following.php?id=<?php echo $userID ?>&action=followLoc&from=feed" role="button">Follow</a>
+                            <a class="btn btn-warning" href="following.php?id=<?php echo $userID ?>&action=followLoc&from=search" role="button">Follow</a>
                         <?php endif; ?>
                     </div>
                     <br><br>
@@ -276,9 +276,9 @@ if (isset($_GET['page'])) {
                         <a href="tag.php?id=<?php echo $userID ?>&tagID=<?php echo $tagID ?>" class="btn btn-info">View</a>
                         <?php if ($isFollowing) : ?>
                             <!--<button type="submit" class="btn btn-secondary" href="newpost.php">Unfollow</button>-->
-                            <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollowTag&from=feed" role="button">Unfollow</a>
+                            <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollowTag&from=search" role="button">Unfollow</a>
                         <?php else : ?>
-                            <a class="btn btn-warning" href="following.php?id=<?php echo $userID ?>&action=followTag&from=feed" role="button">Follow</a>
+                            <a class="btn btn-warning" href="following.php?id=<?php echo $userID ?>&action=followTag&from=search" role="button">Follow</a>
                         <?php endif; ?>
                     </div>
                     <br><br>

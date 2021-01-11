@@ -13,7 +13,19 @@ $from = $_GET['from'];
 if($action == "follow")
 {
     $crud->followUser($ID, $sessionID);
-    header("Location: profile.php?id=$ID");
+    if($from == 'feed')
+    {
+        header("Location: showFollow.php?id=$sessionID&action=following");
+
+    }
+    else if($from = 'profile')
+    {
+        header("Location: profile.php?id=$ID");
+    }
+    else if ($from = 'search')
+    {
+        header("Location: search.php");
+    }
 
 }
 else if($action == "unfollow")
@@ -28,6 +40,10 @@ else if($action == "unfollow")
     {
         header("Location: profile.php?id=$ID");
     }
+    else if ($from = 'search')
+    {
+        header("Location: search.php");
+    }
 }   
 else if($action == "followLoc")
 {
@@ -40,6 +56,10 @@ else if($action == "followLoc")
     else if($from = 'profile')
     {
         header("Location: showFollow.php?id=$sessionID&action=showlocs");
+    }
+    else if ($from = 'search')
+    {
+        header("Location: search.php");
     }
 }
 else if($action == "unfollowLoc")
@@ -55,6 +75,10 @@ else if($action == "unfollowLoc")
     {
         header("Location: showFollow.php?id=$sessionID&action=showlocs");
     }
+    else if ($from = 'search')
+    {
+        header("Location: search.php");
+    }
 }
 else if($action == "followTag")
 {
@@ -68,6 +92,10 @@ else if($action == "followTag")
     {
         header("Location: showFollow.php?id=$sessionID&action=tags");
     }
+    else if ($from = 'search')
+    {
+        header("Location: search.php");
+    }
 }
 else if($action == "unfollowTag")
 {
@@ -80,6 +108,10 @@ else if($action == "unfollowTag")
     else if($from = 'profile')
     {
         header("Location: showFollow.php?id=$sessionID&action=tags");
+    }
+    else if ($from = 'search')
+    {
+        header("Location: search.php");
     }
 }
 
