@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($check == 1) {
                 echo '<div class="alert alert-danger">Fields are Empty or Username</div>';
             } else {
-                echo '<div class="alert alert-danger">Username is already used!!</div>';
+                echo '<div class="alert alert-danger">Username or Email is already used!!</div>';
             }
         } else {
 
