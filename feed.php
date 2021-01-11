@@ -26,7 +26,6 @@ if (isset($_GET['page'])) {
     <div class="row row-cols-1 row-cols-md-2 mb-4 g-4">
 
         <?php
-        $userID = $_GET['id'];
         $posts = $crud->getPostsForFeed($userID);
         $startIndex = ($page - 1) * 6;
         $countP = 6;
