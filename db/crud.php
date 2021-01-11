@@ -963,6 +963,34 @@ class crud
         }
     }
   
+    public function deleteUser($userID)
+    {
+        try {
 
+            $sql = "DELETE FROM Users WHERE Users.uID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
 
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function deactivateUser($userID, $date)
+    {
+        try {
+            $sql = "UPDATE Users SET isActive=0, bannedUntil=:date WHERE Users.uID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->bindparam(':date', $date);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
 }

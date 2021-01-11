@@ -84,7 +84,7 @@ $userFollowingCount = $result['followCt'];
     </div>
 </form>
 
-<form action="deactivate.php" method="get" class="d-flex px-2">
+<form action="deactivate.php?id=<?php echo $sessionID ?>" method="post" class="d-flex px-2">
 <!-- Modal Deactivate-->
     <div class="modal fade" id="deactivateModal" tabindex="-1" aria-labelledby="deactivateModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -107,7 +107,8 @@ $userFollowingCount = $result['followCt'];
                             <div class="row mt-2">
                                 <div class="col container">
                                     <button class="btn btn-lg btn-primary " name="submit" type="submit">Submit</button>
-                                    <button class="btn btn-lg btn-secondary " name="back" type="submit" onClick="removeRequired(this.form)">Close</button>
+                                    <button class="btn btn-lg btn-danger " name="delete" type="submit">Delete</button>
+                                    <button class="btn btn-lg btn-secondary " name="close" type="submit" onClick="removeRequired(this.form)">Close</button>
                                     
                                 </div>
                             </div>
