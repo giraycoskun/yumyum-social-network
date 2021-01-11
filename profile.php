@@ -44,7 +44,7 @@ $userFollowingCount = $result['followCt'];
             <p class="card-text"><b>Bio: </b><?php echo $userBio ?></p>
             <a class="btn btn-success" href="showFollow.php?id=<?php echo $userID ?>&action=following"><b>Following: </b><?php echo $userFollowingCount ?> </a>
             <a class="btn btn-warning" href="showFollow.php?id=<?php echo $userID ?>&action=follower"><b>Follower: </b><?php echo $userFollowerCount ?></a>
-            <a class="btn btn-info" href="showFollow.php?id=<?php echo $userID ?>&action=showlocs"><b>Locations</b></a>
+            <a class="btn btn-info" href="showFollow.php?id=<?php echo $userID ?>&action=locs"><b>Locations</b></a>
             <a class="btn btn-dark" href="showFollow.php?id=<?php echo $userID ?>&action=tags"><b>Tags</b></a>
             <!-- <p class="card-text"><b>Following: </b><?php echo $userFollowingCount ?>  -  <b>Follower: </b><?php echo $userFollowerCount ?></p>-->
             <p class="card-text"><small class="text-muted"><?php echo $userName." - ".$userMail ?></small></p>

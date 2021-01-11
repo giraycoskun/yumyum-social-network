@@ -110,7 +110,7 @@ if ($userID == $_SESSION['uID']) {
 <?php elseif ($action = "tags") : ?>
 
   <div class="container">
-    <h1>Welcome to Tags List</h1>
+    <h1>Welcome to Locations List</h1>
 
     <table class="table">
       <thead class="thead-dark">
