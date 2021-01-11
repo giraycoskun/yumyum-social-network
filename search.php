@@ -61,7 +61,7 @@ if (isset($_GET['page'])) {
                         <a href="profile.php?id=<?php echo $userID ?>" class="btn btn-primary">View</a>
                         <a class="btn btn-success" href="showFollow.php?id=<?php echo $userID ?>&action=following"><b>Following: </b><?php echo $userFollowingCount ?> </a>
                         <a class="btn btn-warning" href="showFollow.php?id=<?php echo $userID ?>&action=follower"><b>Follower: </b><?php echo $userFollowerCount ?></a>
-                        <a class="btn btn-info" href="showFollow.php?id=<?php echo $userID ?>&action=showlocs"><b>Locations</b></a>
+                        <a class="btn btn-info" href="showFollow.php?id=<?php echo $userID ?>&action=locs"><b>Locations</b></a>
                         <a class="btn btn-info" href="showTags.php?id=<?php echo $userID ?>&action=tags"><b>Tags</b></a>
                         <!-- <p class="card-text"><b>Following: </b><?php echo $userFollowingCount ?>  -  <b>Follower: </b><?php echo $userFollowerCount ?></p>-->
 
