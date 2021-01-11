@@ -36,7 +36,7 @@ if (!isset($_GET['id'])) {
         <div class="card">
             <div class="card-body text-center">
                 <h4 class="card-title">Post</h4>
-                <img src="<?php echo $post['pp'] ?>" class="card-img-top" alt="...">
+                <img src="<?php echo $post['mediaPath'] ?>" class="card-img-top" alt="...">
                 <h5 class="mt-2 mb-2 card-text"><b>Likes:</b> <?php echo $post['likeCt'] ?> - <b>Comments:</b> <?php echo count($comments) ?></h5>
                 <?php if (isset($locName)) : ?>
                     <h5 class="mt-2 mb-2 card-text"><b>Location: </b> <?php echo $locName ?></h5>

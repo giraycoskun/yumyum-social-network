@@ -38,7 +38,7 @@ if (isset($_GET['page'])) {
             <?php if ($post['isHidden'] == 0) : ?>
                 <?php $checkLike = $crud->isPostLikedByUser($sessionID, $post['pID']); ?>
                 <div class="col align-items-stretch rounded">
-                    <div class="card h-100">
+                    <div class="card">
                         <div class="card-header">
                             <div class="d-flex align-content center justify-content-between ">
                                 <div class="d-flex justify-content-start align-items-center ">
