@@ -152,7 +152,7 @@ if (isset($_GET['page'])) {
                                     foreach ($tags as $tag) {
                                         $tagName = $tag['tagName'];
                                         $tagID = $tag['tagID'];
-                                        $href = "tag.php?id=$tagID";
+                                        $href = "tag.php?id=$sessionID&tagID=$tagID";
                                         echo "<a href=$href class='badge badge-warning text-dark'>$tagName</a>";
                                     } ?>
                                 </div>

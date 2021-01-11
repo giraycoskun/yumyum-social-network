@@ -63,8 +63,6 @@ if (isset($_GET['page'])) {
                         </div>
 
                         <div class="card-body">
-
-
                             <a href="post.php?id=<?php echo $post['pID'] ?>">
                                 <img src="<?php echo $post['mediaPath'] ?>" class="card-img-top" alt="...">
                             </a>
@@ -79,7 +77,7 @@ if (isset($_GET['page'])) {
                                 foreach ($tags as $tag) {
                                     $tagName = $tag['tagName'];
                                     $tagID = $tag['tagID'];
-                                    $href = "tag.php?id=$tagID";
+                                    $href = "tag.php?id=$userID&tagID=$tagID";
                                     echo "<a href=$href class='badge badge-warning text-dark'>$tagName</a>";
                                 } ?>
                             </div>
