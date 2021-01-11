@@ -44,12 +44,12 @@ if (isset($_GET['page'])) {
                             <div class="d-flex align-content center justify-content-between ">
                                 <div class="d-flex justify-content-start align-items-center ">
                                     <img src="<?php echo $post['pp'] ?>" alt="user" width="50" class="float-left">
-                              
+
                                     <a class="text-dark " href="profile.php?id=<?php echo $post['uID'] ?>">
                                         <h5 class="mx-2 center card-title "><?php echo $post['uName'] ?></h5>
                                     </a>
                                 </div>
-                                
+
                                 <?php $loc = $crud->getLocationForPost($post['pID']);
                                 if (count($loc) == 1) {
                                     $locName = $loc[0]['locName'];
