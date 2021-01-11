@@ -26,8 +26,9 @@ $userPP = $result['pp'];
 $userFollowerCount = $result['followerCt'];
 $userFollowingCount = $result['followCt'];
 
-
 ?>
+
+
 
 <div class="container mt-2">
     <h1>Hello, <?php echo $_SESSION['username'] ?></h1>
@@ -120,39 +121,6 @@ $userFollowingCount = $result['followCt'];
     </div>
 </form>
 
-<form action="updatePost.php" method="post" class="d-flex px-2" enctype="multipart/form-data">
-    <!-- Modal Edit-->
-    <div class="modal fade" id="updateModal" tabindex="-1" aria-labelledby="updateModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="updateModalLabel">Post Edit</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <div class="row mt-2">
-                        <div class="col">
-                            <input type="text" class="form-control" value=<?php echo $user['uName'] ?> name="username">
-                        </div>
-                        <div class="col">
-                            <input type="number" min="1" max="120" class="form-control" value=<?php echo $user['age'] ?> name="age">
-                        </div>
-                    </div>
-                    <div class="row mt-2">
-                        <div class="col container">
-                            <button class="btn btn-lg btn-primary " name="update" type="submit">Update</button>
-                            <button class="btn btn-lg btn-secondary " name="close" type="submit">Close</button>
-                        </div>
-                    </div>
-                </div>
-
-            </div>
-        </div>
-    </div>
-</form>
-
-
-
 
 <div class="container mb-4">
 
@@ -181,7 +149,8 @@ $userFollowingCount = $result['followCt'];
                             <div>
                                 <?php if ($sessionID == $userID) : ?>
                                     <a class="btn btn-danger align-item-end" href="hidePost.php?id=<?php echo $post['pID'] ?>&action=delete" role="button">Delete</a>
-                                    <button type="button" class="btn btn-warning align-item-end" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
+                                    <button type="button" class="btn btn-warning align-item-end" data-whatever="<?php echo $post['pID'] ?>" data-bs-toggle="modal" data-bs-target="#updateModal">Update</button>
+
                                 <?php elseif (!$checkLike) : ?>
                                     <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=profile" method="post" class="form-control mb-2">
                                         <input type="text" name="content" class="form-control mb-2">
@@ -208,5 +177,51 @@ $userFollowingCount = $result['followCt'];
 </div>
 <!--container div  -->
 
+<form action="updatePost.php" method="post" class="d-flex px-2" enctype="multipart/form-data">
+    <!-- Modal Edit-->
+    <div class="modal fade" id="updateModal" tabindex="-1" role="dialog" aria-labelledby="updateModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="updateModalLabel">Post Edit</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="row mt-2">
+                        <div class="col">
+                            <div class="form-group">
+                                <input type="hidden" class="form-control" id="post-id" name="postID" value="">
+                            </div>
+                            <div class="form-group">
+                                <label for="message-text" class="col-form-label">Content:</label>
+                                <textarea class="form-control" id="content" name="content"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col container">
+                            <button class="btn btn-lg btn-primary " name="update" type="submit">Update</button>
+                            <button class="btn btn-lg btn-secondary " name="close" type="submit">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+<script type='text/javascript'>
+    $('#updateModal').on('show.bs.modal', function(event) {
+        var button = $(event.relatedTarget) // Button that triggered the modal
+        var postID = button.data('whatever') // Extract info from data-* attributes
+        // If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
+        // Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
+        var modal = $(this)
+        //modal.find('.modal-title').text('New message to ' + recipient)
+        modal.find('.modal-body input').val(postID)
+    })
+</script>
 
 <?php require_once 'components/footer.php'; ?>

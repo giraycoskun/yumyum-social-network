@@ -16,7 +16,7 @@
                 <div class="col align-items-stretch rounded">
                     <div class="card h-100">
                         <a href="post.php?id=<?php echo $post['pID'] ?>">
-                            <img src="files/posts/images.jpeg" class="card-img-top" alt="...">
+                            <img src="..." class="card-img-top" alt="...">
                         </a>
                         <div class="card-body">
                             <a class="text-dark" href="profile.php?id=<?php echo $post['uID'] ?>">

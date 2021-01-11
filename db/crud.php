@@ -147,6 +147,7 @@ class crud
     }
     public function getPostByID($pID)
     {
+        #TODO
         try {
             $sql = "select * from Posts,Users where Posts.pID = :pID and Posts.uID = Users.uID; ";
             $stmt = $this->db->prepare($sql);
@@ -190,7 +191,9 @@ class crud
     public function getPostsForSearch($search)
     {
         try {
-            $sql = "SELECT DISTINCT p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt 
+            $sql = "SELECT * 
+            FROM
+            (SELECT DISTINCT p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt 
             FROM Posts p, Users u, Locations t 
             WHERE p.isHidden = 0 and p.uID = u.uID and u.uName LIKE '%$search%' or u.name LIKE '%$search%' or u.surname LIKE '%$search%' or (concat(u.name,' ',u.surname )LIKE  '%$search%') and t.locID = p.locID 
             UNION 
@@ -204,7 +207,9 @@ class crud
             UNION 
             SELECT DISTINCT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, f.locName, p.txt 
             from Tags t, Users u, PostsHasTags ph, Posts p, Locations f 
-            where t.tagName LIKE '%$search%' and t.tagID = ph.tID and ph.pID = p.pID and p.uID = u.uID and f.locID = p.locID";
+            where t.tagName LIKE '%$search%' and t.tagID = ph.tID and ph.pID = p.pID and p.uID = u.uID and f.locID = p.locID) AS T
+            ORDER BY T.timeSt DESC;";
+            
             $stmt = $this->db->prepare($sql);
             #$stmt->bindparam(':search', $search);
             $stmt->execute();
@@ -685,7 +690,7 @@ class crud
     public function getPostsForTag($tagID)
     {
         try {
-            $sql = "SELECT * FROM Users, Posts, PostsHasTags WHERE Posts.uID=Users.uID and PostsHasTags.pID = Posts.pID and PostsHasTags.tID=:tagID";
+            $sql = "SELECT * FROM Users, Posts, PostsHasTags WHERE Posts.uID=Users.uID and PostsHasTags.pID = Posts.pID and PostsHasTags.tID=:tagID ORDER BY Posts.timeSt DESC";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':tagID', $tagID);
             $stmt->execute();
@@ -701,7 +706,7 @@ class crud
     public function getPostsForLocation($locID)
     {
         try {
-            $sql = "SELECT * FROM Users, Posts WHERE Posts.uID=Users.uID and Posts.locID=:locID";
+            $sql = "SELECT * FROM Users, Posts WHERE Posts.uID=Users.uID and Posts.locID=:locID ORDER BY Posts.timeSt DESC";
             $stmt = $this->db->prepare($sql);
             $stmt->bindparam(':locID', $locID);
             $stmt->execute();
@@ -907,6 +912,21 @@ class crud
             return false;
         }
     }
+
+    public function updatePostTxt($postID,$content){
+        try {
+            $sql = "UPDATE Posts SET txt=:content WHERE Posts.pID=:postID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':postID', $postID);
+            $stmt->bindparam(':content', $content);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
     public function getTagID($tag){
         try{
             $sql = "SELECT * FROM Tags WHERE Tags.tagName=:tag";

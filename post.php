@@ -90,9 +90,6 @@ if (!isset($_GET['id'])) {
                     <input type="text" name="content" class="form-control mb-2">
                     <button type="submit" class="btn btn-primary" href="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=profile" role="button">Comment</button>
                 </form>
-
-
-
             </div> <!-- Card -->
         </div>
     </div>
