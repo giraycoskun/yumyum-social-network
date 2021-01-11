@@ -41,26 +41,40 @@ if (isset($_GET['page'])) {
                 <div class="col align-items-stretch rounded">
                     <div class="card h-100">
                         <div class="card-header">
-                            <a class="text-dark" href="profile.php?id=<?php echo $post['uID'] ?>">
-                                <h5 class="card-title"><?php echo $post['uName'] ?></h5>
-                            </a>
-                        </div>
-                        <div class="card-body">
-                            <a href="post.php?id=<?php echo $post['pID'] ?>">
-                                <img src="files/posts/images.jpeg" class="card-img-top" alt="...">
-                            </a>
+                            <div class="d-flex justify-content-between ">
+                                <div class="d-flex justify-content-start ">
+                                    <img src="<?php echo $post['pp'] ?>" alt="user" width="50" class="float-left">
+                              
+                                    <a class="text-dark " href="profile.php?id=<?php echo $post['uID'] ?>">
+                                        <h5 class="card-title "><?php echo $post['uName'] ?></h5>
+                                    </a>
+                                </div>
+                                
+                                <?php $loc = $crud->getLocationForPost($post['pID']);
+                                if (count($loc) == 1) {
+                                    $locName = $loc[0]['locName'];
+                                    $locID = $loc[0]['locID'];
+                                }
+                                if (isset($locName)) : ?>
+                                    <?php $href = "location.php?id=$locID"; ?>
 
-                            <p class="card-text"><?php echo $post['mediaPath'] ?></p>
-                            <p class="card-text"><?php echo $post['txt'] ?></p>
+
+                                    <?php echo "<a href=$href class='badge badge-warning text-dark h-6'>  $locName </a>"; ?>
+                                <?php endif; ?>
+                            </div>
+                        </div>
+
+                        <div class="card-body">
+
+
+                            <a href="post.php?id=<?php echo $post['pID'] ?>">
+                                <img src="<?php echo $post['mediaPath'] ?>" class="card-img-top" alt="...">
+                            </a>
+                            <p class="card-text "><?php echo $post['timeSt'] ?></p>
+                            <p class="card-text mt-4"><?php echo $post['txt'] ?></p>
                             <?php $comments = $crud->getCommentsforPost($post['pID']); ?>
                             <p class="card-text"><b>Likes:</b> <?php echo $post['likeCt'] ?> - <b>Comments:</b> <?php echo count($comments) ?></p>
-                            <?php $loc = $crud->getLocationForPost($post['pID']);
-                            if (count($loc) == 1) {
-                                $locName = $loc[0]['locName'];
-                            }
-                            if (isset($locName)) : ?>
-                                <p class="mt-2 mb-2 card-text"><b><b>Location:</b> </b> <?php echo $locName ?></p>
-                            <?php endif; ?>
+
                             <div class="d-flex text-left mt-4">
                                 <b>Tags:</b>
                                 <?php $tags = $crud->getTagsforPost($post['pID']);
@@ -82,7 +96,7 @@ if (isset($_GET['page'])) {
                                     <p class="card-text"><b> <?php echo $comment['uName'] ?> </b>: <?php echo $comment['content'] ?> - <?php echo $comment['timeSt'] ?> </p>
                                 <?php } ?>
                             </div>
-                            <p class="card-text"><?php echo $post['timeSt'] ?></p>
+
 
                             <?php if (!$checkLike) : ?>
                                 <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=feed" method="post" class="form-control mb-2">
@@ -119,7 +133,7 @@ if (isset($_GET['page'])) {
                         <span class="page-link"><?php echo ($i + 1) ?></span>
                     </li>
                 <?php else : ?>
-                    <li class="page-item"><a class="page-link" href="feed.php?id=<?php echo $userID?>&page=<?php echo ($i + 1)?>"><?php echo ($i + 1) ?></a></li>
+                    <li class="page-item"><a class="page-link" href="feed.php?id=<?php echo $userID ?>&page=<?php echo ($i + 1) ?>"><?php echo ($i + 1) ?></a></li>
                 <?php endif; ?>
             <?php } ?>
         </ul>
