@@ -41,12 +41,12 @@ if (isset($_GET['page'])) {
                 <div class="col align-items-stretch rounded">
                     <div class="card h-100">
                         <div class="card-header">
-                            <div class="d-flex justify-content-between ">
-                                <div class="d-flex justify-content-start ">
+                            <div class="d-flex align-content center justify-content-between ">
+                                <div class="d-flex justify-content-start align-items-center ">
                                     <img src="<?php echo $post['pp'] ?>" alt="user" width="50" class="float-left">
                               
                                     <a class="text-dark " href="profile.php?id=<?php echo $post['uID'] ?>">
-                                        <h5 class="card-title "><?php echo $post['uName'] ?></h5>
+                                        <h5 class="mx-2 center card-title "><?php echo $post['uName'] ?></h5>
                                     </a>
                                 </div>
                                 
@@ -56,10 +56,8 @@ if (isset($_GET['page'])) {
                                     $locID = $loc[0]['locID'];
                                 }
                                 if (isset($locName)) : ?>
-                                    <?php $href = "location.php?id=$locID"; ?>
-
-
-                                    <?php echo "<a href=$href class='badge badge-warning text-dark h-6'>  $locName </a>"; ?>
+                                    <?php $href = "location.php?id=$sessionID&locID=$locID"; ?>
+                                    <?php echo "<a href=$href class='badge badge-warning text-dark h5 align-items-center'>  $locName </a>"; ?>
                                 <?php endif; ?>
                             </div>
                         </div>
