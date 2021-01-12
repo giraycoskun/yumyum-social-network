@@ -89,18 +89,21 @@ class crud
         }
     }
 
-    public function getMessages($userID)
+    public function getMessages($userID, $responseID)
     {
 
         try {
-            //$sql1 = "select * from Messages, Users where Messages.rID = Users.uID and Users.uID = :userID";
-            $sql2 = "select Messages.content, Users.name, Users.surname from Messages, Users where Messages.sID = Users.uID and Users.uID != :userID";
-            //$stmt = $this->db->prepare($sql1);
-            $stmt2 = $this->db->prepare($sql2);
-            $stmt2->bindparam(':userID', $userID);
+            $sql = "SELECT *
+            FROM (
+            SELECT * FROM Messages, Users WHERE Users.uID=$userID and Messages.sID = $userID and Messages.rID=$responseID
+            UNION
+            SELECT * FROM Messages, Users WHERE Users.uID=$responseID and Messages.rID = $userID and Messages.sID=$responseID) AS T
+            ORDER BY T.timeSt DESC LIMIT 0, 10";
+            $stmt = $this->db->prepare($sql);
+            #$stmt->bindparam(':userID', $userID);
             //$stmt->execute();
-            $stmt2->execute();
-            $result = $stmt2;
+            $stmt->execute();
+            $result = $stmt;
             return $result;
         } catch (PDOException $e) {
             echo $e->getMessage();
@@ -108,8 +111,67 @@ class crud
         }
     }
 
+    public function insertMessages($userID, $responseID, $message)
+    {
+        try {
+            $sql = "INSERT INTO Messages (rID, sID, content) VALUES (:responseID, :userID, :message)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->bindparam(':responseID', $responseID);
+            $stmt->bindparam(':message', $message);
+            $stmt->execute();
 
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
 
+    }
+
+    public function getChats($userID)
+    {
+
+        try {
+            $sql = "SELECT T.uID, T.uName, COUNT(T.mID) AS messageCount, T.pp
+            FROM (
+            SELECT * FROM Messages, Users WHERE Users.uID=Messages.rID and Messages.sID = $userID
+            UNION
+            SELECT * FROM Messages, Users WHERE Users.uID=Messages.sID and Messages.rID =$userID) AS T
+            GROUP BY T.uID";
+            $stmt = $this->db->prepare($sql);
+            #$stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            return $result;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function deleteChat($userID, $responseID)
+    {
+        try {
+
+            $sql = "DELETE FROM Messages WHERE Messages.rID=:userID and Messages.sID=:responseID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->bindparam(':responseID', $responseID);
+            $stmt->execute();
+
+            $sql = "DELETE FROM Messages WHERE Messages.rID=:responseID and Messages.sID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->bindparam(':responseID', $responseID);
+            $stmt->execute();
+
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
 
     public function insertUser($username, $pass, $fname, $mail, $lname, $bio, $age)
     {

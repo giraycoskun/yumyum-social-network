@@ -63,7 +63,7 @@ if (isset($_GET['page'])) {
 
                         <div class="card-body">
                             <a href="post.php?id=<?php echo $post['pID'] ?>">
-                                <img src="<?php echo $post['mediaPath'] ?>" class="card-img-top" alt="...">
+                                <img src="<?php echo $post['mediaPath'] ?>" height=400 class="card-img-top" alt="...">
                             </a>
                             <p class="card-text "><?php echo $post['timeSt'] ?></p>
                             <p class="card-text mt-4"><?php echo $post['txt'] ?></p>
