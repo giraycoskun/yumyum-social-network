@@ -98,7 +98,7 @@ class crud
             SELECT * FROM Messages, Users WHERE Users.uID=$userID and Messages.sID = $userID and Messages.rID=$responseID
             UNION
             SELECT * FROM Messages, Users WHERE Users.uID=$responseID and Messages.rID = $userID and Messages.sID=$responseID) AS T
-            ORDER BY T.timeSt ASC LIMIT 0, 10";
+            ORDER BY T.timeSt DESC LIMIT 0, 10";
             $stmt = $this->db->prepare($sql);
             #$stmt->bindparam(':userID', $userID);
             //$stmt->execute();
