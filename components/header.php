@@ -47,7 +47,7 @@ if (isset($_SESSION['uID'])) {
 
   <?php elseif ($_SESSION['isAdmin'] == true) : ?>
     <nav class="navbar navbar-light bg-light">
-      <a class="navbar-brand" href="#">
+      <a class="navbar-brand" href="admin.php">
         <img src="https://drive.google.com/thumbnail?id=1LolaArK6Zwpb9r93fiVGC1GQ09Fjy6qs" width="30" height="30" class="d-inline-block align-top" alt="">
         Admin DashBoard
       </a>
