@@ -1075,4 +1075,68 @@ class crud
             return false;
         }
     }
+
+    public function getNotificationCount($userID)
+    {
+        try{
+            $sql = "SELECT COUNT(Notification.uID) AS NotifCount
+            FROM Users , Notification
+            WHERE Users.uID=Notification.uID and Users.uID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            return $result;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getAllNotifications($userID)
+    {
+        try{
+            $sql = "SELECT Notification.nID, Notification.content
+            from Users , Notification
+            where Users.uID = Notification.uID and Users.uID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            return $result;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }   
+    }
+
+    public function deleteAllNotifications($userID)
+    {
+        try {
+
+            $sql = "DELETE FROM Notification WHERE Notification.uID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+    public function deleteSingleNotification($nID)
+    {
+        try {
+
+            $sql = "DELETE FROM Notification WHERE Notification.nID=:nID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':nID', $nID);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
 }
