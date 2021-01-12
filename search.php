@@ -69,11 +69,11 @@ if (isset($_GET['page'])) {
 
                         <?php if ($isFollowing) : ?>
                             <!--<button type="submit" class="btn btn-secondary" href="newpost.php">Unfollow</button>-->
-                            <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollow" role="button">Unfollow</a>
-                            <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&action=follow" role="button">Report</a>
+                            <a class="btn btn-secondary" href="following.php?id=<?php echo $userID ?>&action=unfollow&from=search" role="button">Unfollow</a>
+                            <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>" role="button">Report</a>
                         <?php else : ?>
-                            <a class="btn btn-primary" href="following.php?id=<?php echo $userID ?>&action=follow" role="button">Follow</a>
-                            <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>&action=follow" role="button">Report</a>
+                            <a class="btn btn-primary" href="following.php?id=<?php echo $userID ?>&action=follow&from=search" role="button">Follow</a>
+                            <a class="btn btn-danger" href="report.php?id=<?php echo $userID ?>" role="button">Report</a>
                         <?php endif; ?>
                         </img>
                     </div>
