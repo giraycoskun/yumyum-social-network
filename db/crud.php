@@ -905,12 +905,17 @@ class crud
 
     public function insertPost($userID, $media, $text, $locationID){
         try{
-            $sql = "INSERT INTO Posts (uID, mediaPath, txt, locID) VALUES(:userID, :media, :text,  :locationID)";
-            $stmt = $this->db->prepare($sql);
+            if ($locationID != 0) {
+                $sql = "INSERT INTO Posts (uID, mediaPath, txt, locID) VALUES(:userID, :media, :text,  :locationID)";
+                $stmt = $this->db->prepare($sql);
+                $stmt->bindparam(':locationID', $locationID);
+            } else {
+                $sql = "INSERT INTO Posts (uID, mediaPath, txt) VALUES(:userID, :media, :text)";
+                $stmt = $this->db->prepare($sql);
+            }
             $stmt->bindparam(':userID', $userID);
             $stmt->bindparam(':media', $media);
             $stmt->bindparam(':text', $text);
-            $stmt->bindparam(':locationID', $locationID);
             $stmt->execute();
             $result = $this->getLastPostID($userID);
             #echo "New post created successfully";
@@ -1072,6 +1077,18 @@ class crud
             return true;
         } catch (PDOException $e) {
             echo $e->getMessage();
+            return false;
+        }
+    }
+    public function deleteTagsFromPost($postID){
+        try{
+            $sql = "DELETE FROM PostsHasTags WHERE PostsHasTags.pId=:postID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':postID', $postID);
+            $stmt->execute();
+            return $true;
+        }catch (PDOException $e) {
+            #echo $e->getMessage();
             return false;
         }
     }
