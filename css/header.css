@@ -1,13 +1,1 @@
 
-.nav-item:hover {
-    background: red;
-  }
-.nav-item .badge {
-    position: absolute;
-    top: -10px;
-    right: -10px;
-    padding: 5px 10px;
-    border-radius: 50%;
-    background: red;
-    color: white;
-  }

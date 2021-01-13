@@ -44,6 +44,7 @@ if ($userID == $_SESSION['uID']) {
         <?php endif; ?>
         </tr>
     <?php } ?>
+    
     </tbody>
 </table>
 </div>

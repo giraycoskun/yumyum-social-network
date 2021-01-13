@@ -96,10 +96,7 @@ require_once "db/conn.php";
               <a class="nav-link" href="chatbox.php?id=<?php echo $userID ?>">ChatBox</a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="notifications.php?id=<?php echo $userID ?>">
-              Notifications<span class="badge">(<?php $result2 = $crud->getNotificationCount($userID); echo $result2["NotifCount"]?>)</span> 
-            </a> 
-                         
+              <a class="nav-link" href="notifications.php?id=<?php echo $userID ?>">Notifications<span class="badge">(<?php $result2 = $crud->getNotificationCount($userID); echo $result2["NotifCount"]?>)</span> </a>              
             </li>
           </ul>
           <div class="d-flex px-2">
