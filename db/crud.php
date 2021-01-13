@@ -89,18 +89,21 @@ class crud
         }
     }
 
-    public function getMessages($userID)
+    public function getMessages($userID, $responseID)
     {
 
         try {
-            //$sql1 = "select * from Messages, Users where Messages.rID = Users.uID and Users.uID = :userID";
-            $sql2 = "select Messages.content, Users.name, Users.surname from Messages, Users where Messages.sID = Users.uID and Users.uID != :userID";
-            //$stmt = $this->db->prepare($sql1);
-            $stmt2 = $this->db->prepare($sql2);
-            $stmt2->bindparam(':userID', $userID);
+            $sql = "SELECT *
+            FROM (
+            SELECT * FROM Messages, Users WHERE Users.uID=$userID and Messages.sID = $userID and Messages.rID=$responseID
+            UNION
+            SELECT * FROM Messages, Users WHERE Users.uID=$responseID and Messages.rID = $userID and Messages.sID=$responseID) AS T
+            ORDER BY T.timeSt DESC LIMIT 0, 10";
+            $stmt = $this->db->prepare($sql);
+            #$stmt->bindparam(':userID', $userID);
             //$stmt->execute();
-            $stmt2->execute();
-            $result = $stmt2;
+            $stmt->execute();
+            $result = $stmt;
             return $result;
         } catch (PDOException $e) {
             echo $e->getMessage();
@@ -108,8 +111,67 @@ class crud
         }
     }
 
+    public function insertMessages($userID, $responseID, $message)
+    {
+        try {
+            $sql = "INSERT INTO Messages (rID, sID, content) VALUES (:responseID, :userID, :message)";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->bindparam(':responseID', $responseID);
+            $stmt->bindparam(':message', $message);
+            $stmt->execute();
 
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
 
+    }
+
+    public function getChats($userID)
+    {
+
+        try {
+            $sql = "SELECT T.uID, T.uName, COUNT(T.mID) AS messageCount, T.pp
+            FROM (
+            SELECT * FROM Messages, Users WHERE Users.uID=Messages.rID and Messages.sID = $userID
+            UNION
+            SELECT * FROM Messages, Users WHERE Users.uID=Messages.sID and Messages.rID =$userID) AS T
+            GROUP BY T.uID";
+            $stmt = $this->db->prepare($sql);
+            #$stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            return $result;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function deleteChat($userID, $responseID)
+    {
+        try {
+
+            $sql = "DELETE FROM Messages WHERE Messages.rID=:userID and Messages.sID=:responseID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->bindparam(':responseID', $responseID);
+            $stmt->execute();
+
+            $sql = "DELETE FROM Messages WHERE Messages.rID=:responseID and Messages.sID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->bindparam(':responseID', $responseID);
+            $stmt->execute();
+
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
 
     public function insertUser($username, $pass, $fname, $mail, $lname, $bio, $age)
     {
@@ -173,10 +235,10 @@ class crud
             WHERE p.isHidden = 0 and p.uID = u.uID and t.locID = p.locID and u.uID = uf.FolloweeID and uf.FollowerID = $userID
             UNION
             SELECT   p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt, u.pp FROM Users u, Posts p, Locations t,  UserFollowsLocations ul 
-            WHERE p.isHidden = 0 and t.locID = p.locID and ul.locID = p.locID and u.uID = ul.uID and ul.uID = $userID
+            WHERE p.isHidden = 0 and t.locID = p.locID and p.uID = u.uID and ul.locID = p.locID and ul.uID = $userID
             UNION 
             SELECT   p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt, u.pp FROM Users u, Posts p, Locations t, UserFollowsTags ut, PostsHasTags pt
-            WHERE p.isHidden = 0 and t.locID = p.locID and p.pID = pt.pID and ut.tID = pt.tID and u.uID = ut.uID and ut.uID = $userID) AS T
+            WHERE p.isHidden = 0 and t.locID = p.locID and p.pID = pt.pID and ut.tID = pt.tID and u.uID = p.uID and ut.uID = $userID) AS T
             ORDER BY T.timeSt DESC;";
             $stmt = $this->db->prepare($sql);
             $stmt->execute();
@@ -193,19 +255,19 @@ class crud
         try {
             $sql = "SELECT * 
             FROM
-            (SELECT DISTINCT p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt 
+            (SELECT DISTINCT p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt, u.pp 
             FROM Posts p, Users u, Locations t 
             WHERE p.isHidden = 0 and p.uID = u.uID and u.uName LIKE '%$search%' or u.name LIKE '%$search%' or u.surname LIKE '%$search%' or (concat(u.name,' ',u.surname )LIKE  '%$search%') and t.locID = p.locID 
             UNION 
-            SELECT DISTINCT p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt 
+            SELECT DISTINCT p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt, u.pp  
             FROM Posts p, Users u, Locations t 
             WHERE p.isHidden = 0 and p.uID = u.uID and p.txt LIKE '%$search%' and t.locID = p.locID 
             UNION 
-            SELECT DISTINCT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt 
+            SELECT DISTINCT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, t.locName, p.txt, u.pp  
             from Locations t, Users u, Posts p 
             where t.locName LIKE '%$search%' and t.locID = p.locID and p.uID = u.uID and p.isHidden = 0 
             UNION 
-            SELECT DISTINCT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, f.locName, p.txt 
+            SELECT DISTINCT  p.pID, p.mediaPath, p.locID, p.timeSt, p.likeCt, p.isHidden, u.name, u.surname, u.uID,  u.uName, f.locName, p.txt, u.pp  
             from Tags t, Users u, PostsHasTags ph, Posts p, Locations f 
             where t.tagName LIKE '%$search%' and t.tagID = ph.tID and ph.pID = p.pID and p.uID = u.uID and f.locID = p.locID) AS T
             ORDER BY T.timeSt DESC;";
@@ -1030,4 +1092,68 @@ class crud
             return false;
         }
     }
+
+    public function getNotificationCount($userID)
+    {
+        try{
+            $sql = "SELECT COUNT(Notification.uID) AS NotifCount
+            FROM Users , Notification
+            WHERE Users.uID=Notification.uID and Users.uID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            $result = $stmt->fetch();
+            return $result;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
+    public function getAllNotifications($userID)
+    {
+        try{
+            $sql = "SELECT Notification.nID, Notification.content
+            from Users , Notification
+            where Users.uID = Notification.uID and Users.uID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            $result = $stmt->fetchAll();
+            return $result;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }   
+    }
+
+    public function deleteAllNotifications($userID)
+    {
+        try {
+
+            $sql = "DELETE FROM Notification WHERE Notification.uID=:userID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':userID', $userID);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+    public function deleteSingleNotification($nID)
+    {
+        try {
+
+            $sql = "DELETE FROM Notification WHERE Notification.nID=:nID";
+            $stmt = $this->db->prepare($sql);
+            $stmt->bindparam(':nID', $nID);
+            $stmt->execute();
+            return true;
+        } catch (PDOException $e) {
+            echo $e->getMessage();
+            return false;
+        }
+    }
+
 }

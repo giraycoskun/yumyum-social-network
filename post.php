@@ -16,7 +16,6 @@ if (!isset($_GET['id'])) {
     $id = $_GET['id'];
     $sessionID = $_SESSION['uID'];
 
-
     $post = $crud->getPostByID($id);
     $userID = $post['uID'];
     $comments = $crud->getCommentsforPost($post['pID']);
@@ -37,7 +36,7 @@ if (!isset($_GET['id'])) {
         <div class="card">
             <div class="card-body text-center">
                 <h4 class="card-title">Post</h4>
-                <img src="files/posts/images.jpeg" class="card-img-top" alt="...">
+                <img src="<?php echo $post['mediaPath'] ?>" class="card-img-top" alt="...">
                 <h5 class="mt-2 mb-2 card-text"><b>Likes:</b> <?php echo $post['likeCt'] ?> - <b>Comments:</b> <?php echo count($comments) ?></h5>
                 <?php if (isset($locName)) : ?>
                     <h5 class="mt-2 mb-2 card-text"><b>Location: </b> <?php echo $locName ?></h5>
@@ -88,7 +87,7 @@ if (!isset($_GET['id'])) {
 
                 <form action="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=post" method="post" class="form-control mb-2">
                     <input type="text" name="content" class="form-control mb-2">
-                    <button type="submit" class="btn btn-primary" href="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=profile" role="button">Comment</button>
+                    <button type="submit" class="btn btn-primary" href="comment.php?id=<?php echo $userID ?>&pid=<?php echo $post['pID'] ?>&action=post" role="button">Comment</button>
                 </form>
             </div> <!-- Card -->
         </div>

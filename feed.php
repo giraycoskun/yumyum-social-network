@@ -26,7 +26,6 @@ if (isset($_GET['page'])) {
     <div class="row row-cols-1 row-cols-md-2 mb-4 g-4">
 
         <?php
-        $userID = $_GET['id'];
         $posts = $crud->getPostsForFeed($userID);
         $startIndex = ($page - 1) * 6;
         $countP = 6;
@@ -39,36 +38,32 @@ if (isset($_GET['page'])) {
             <?php if ($post['isHidden'] == 0) : ?>
                 <?php $checkLike = $crud->isPostLikedByUser($sessionID, $post['pID']); ?>
                 <div class="col align-items-stretch rounded">
-                    <div class="card h-100">
+                    <div class="card">
                         <div class="card-header">
-                            <div class="d-flex justify-content-between ">
-                                <div class="d-flex justify-content-start ">
+                            <div class="d-flex align-content center justify-content-between ">
+                                <div class="d-flex justify-content-start align-items-center ">
                                     <img src="<?php echo $post['pp'] ?>" alt="user" width="50" class="float-left">
-                              
+
                                     <a class="text-dark " href="profile.php?id=<?php echo $post['uID'] ?>">
-                                        <h5 class="card-title "><?php echo $post['uName'] ?></h5>
+                                        <h5 class="mx-2 center card-title "><?php echo $post['uName'] ?></h5>
                                     </a>
                                 </div>
-                                
+
                                 <?php $loc = $crud->getLocationForPost($post['pID']);
                                 if (count($loc) == 1) {
                                     $locName = $loc[0]['locName'];
                                     $locID = $loc[0]['locID'];
                                 }
                                 if (isset($locName)) : ?>
-                                    <?php $href = "location.php?id=$locID"; ?>
-
-
-                                    <?php echo "<a href=$href class='badge badge-warning text-dark h-6'>  $locName </a>"; ?>
+                                    <?php $href = "location.php?id=$sessionID&locID=$locID"; ?>
+                                    <?php echo "<a href=$href class='badge badge-warning text-dark h5 align-items-center'>  $locName </a>"; ?>
                                 <?php endif; ?>
                             </div>
                         </div>
 
                         <div class="card-body">
-
-
                             <a href="post.php?id=<?php echo $post['pID'] ?>">
-                                <img src="<?php echo $post['mediaPath'] ?>" class="card-img-top" alt="...">
+                                <img src="<?php echo $post['mediaPath'] ?>" height=400 class="card-img-top" alt="...">
                             </a>
                             <p class="card-text "><?php echo $post['timeSt'] ?></p>
                             <p class="card-text mt-4"><?php echo $post['txt'] ?></p>
@@ -81,7 +76,7 @@ if (isset($_GET['page'])) {
                                 foreach ($tags as $tag) {
                                     $tagName = $tag['tagName'];
                                     $tagID = $tag['tagID'];
-                                    $href = "tag.php?id=$tagID";
+                                    $href = "tag.php?id=$userID&tagID=$tagID";
                                     echo "<a href=$href class='badge badge-warning text-dark'>$tagName</a>";
                                 } ?>
                             </div>
