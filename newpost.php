@@ -18,7 +18,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST'){
         else {
             $text = $_POST['text'];
             $media = 'empty';
-            
+            $locationID = 0;
             $locationName = ucwords((strtolower(trim($_POST['locationName'])))); #ucwords makes first char upper
             if(strlen($locationName)>0) {
                 $locResult = $crud->getLocationID($locationName);
